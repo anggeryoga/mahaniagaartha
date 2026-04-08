@@ -5,13 +5,13 @@ const teamMembers = [
   {
     name: "Kristianti",
     role: "Sales Marketing",
-    image: "/dm/dm%201.webp",
+    image: "/dm/dm%204.webp",
     phone: "6281234086100",
   },
   {
     name: "Livya Ayu",
     role: "Sales Marketing",
-    image: "/dm/dm%202.webp",
+    image: "/dm/dm%201.webp",
     phone: "6282124952606",
   },
   {
@@ -23,7 +23,7 @@ const teamMembers = [
   {
     name: "Berliiana",
     role: "Sales Marketing",
-    image: "/dm/dm%204.webp",
+    image: "/dm/dm%202.webp",
     phone: "6285117276822",
   },
 ];
