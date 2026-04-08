@@ -2,10 +2,10 @@ import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 
 const teamMembers = [
-  { name: "Livya Ayu", role: "Sales Marketing", image: "/dm/1.webp" },
-  { name: "Berliiana", role: "Sales Marketing", image: "/dm/2.webp" },
-  { name: "Putri Sri", role: "Sales Marketing", image: "/dm/3.webp" },
-  { name: "Kristianti", role: "Sales Marketing", image: "/dm/4.webp" },
+  { name: "Livya Ayu", role: "Sales Marketing", image: "/dm/dm 1.webp" },
+  { name: "Berliiana", role: "Sales Marketing", image: "/dm/dm 2.webp" },
+  { name: "Putri Sri", role: "Sales Marketing", image: "/dm/dm 3.webp" },
+  { name: "Kristianti", role: "Sales Marketing", image: "/dm/dm 4.webp" },
 ];
 
 const TeamSection = () => {
