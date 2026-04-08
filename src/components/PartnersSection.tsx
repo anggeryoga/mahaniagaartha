@@ -11,15 +11,17 @@ const partners = [
   { name: "Chick Ichick", logo: "/logos/10.webp" },
 ];
 
-cconst PartnersSection = () => {
+const PartnersSection = () => {
   return (
     <section className="py-14 border-t border-border bg-background">
       <div className="container mx-auto px-4 lg:px-8">
-
+        
+        {/* Heading */}
         <p className="text-center text-xs uppercase tracking-[0.2em] text-muted-foreground mb-10">
           Brand Usaha Kami
         </p>
 
+        {/* Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5">
           {partners.map((partner) => (
             <div
@@ -38,6 +40,7 @@ cconst PartnersSection = () => {
               <img
                 src={partner.logo}
                 alt={partner.name}
+                loading="lazy"
                 className="
                   w-full h-full
                   object-cover
@@ -47,6 +50,9 @@ cconst PartnersSection = () => {
                   group-hover:opacity-100
                   transition-all duration-300
                 "
+                onError={(e) => {
+                  e.currentTarget.src = "/placeholder.svg";
+                }}
               />
             </div>
           ))}
@@ -56,4 +62,5 @@ cconst PartnersSection = () => {
     </section>
   );
 };
+
 export default PartnersSection;
