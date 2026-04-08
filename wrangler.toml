@@ -1,0 +1,3 @@
+id="p3jv0e"
+[build]
+command = "npm install && npm run build"
