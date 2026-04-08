@@ -1,15 +1,11 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import team1 from "@/assets/team-1.jpg";
-import team2 from "@/assets/team-2.jpg";
-import team3 from "@/assets/team-3.jpg";
-import team4 from "@/assets/team-4.jpg";
 
 const teamMembers = [
-  { name: "Andi Saputra", role: "Sales Executive", image: team1 },
-  { name: "Rina Lestari", role: "Konsultan Usaha", image: team2 },
-  { name: "Fajar Nugroho", role: "Sales Manager", image: team3 },
-  { name: "Dewi Kartika", role: "Customer Support", image: team4 },
+  { name: "Livya Ayu", role: "Sales Marketing", image: "/dm/1.webp" },
+  { name: "Berliiana", role: "Sales Marketing", image: "/dm/2.webp" },
+  { name: "Putri Sri", role: "Sales Marketing", image: "/dm/3.webp" },
+  { name: "Kristianti", role: "Sales Marketing", image: "/dm/4.webp" },
 ];
 
 const TeamSection = () => {
@@ -64,8 +60,6 @@ const TeamSection = () => {
                   alt={member.name}
                   className="w-full h-full object-cover"
                   loading="lazy"
-                  width={512}
-                  height={512}
                 />
               </div>
 
