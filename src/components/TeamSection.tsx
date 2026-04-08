@@ -2,10 +2,30 @@ import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 
 const teamMembers = [
-  { name: "Livya Ayu", role: "Sales Marketing", image: "/dm/dm 1.webp" },
-  { name: "Berliiana", role: "Sales Marketing", image: "/dm/dm 2.webp" },
-  { name: "Putri Sri", role: "Sales Marketing", image: "/dm/dm 3.webp" },
-  { name: "Kristianti", role: "Sales Marketing", image: "/dm/dm 4.webp" },
+  {
+    name: "Kristianti",
+    role: "Sales Marketing",
+    image: "/dm/dm%201.webp",
+    phone: "6281234086100",
+  },
+  {
+    name: "Livya Ayu",
+    role: "Sales Marketing",
+    image: "/dm/dm%202.webp",
+    phone: "6282124952606",
+  },
+  {
+    name: "Putri Sri",
+    role: "Sales Marketing",
+    image: "/dm/dm%203.webp",
+    phone: "6281212126722",
+  },
+  {
+    name: "Berliiana",
+    role: "Sales Marketing",
+    image: "/dm/dm%204.webp",
+    phone: "6285117276822",
+  },
 ];
 
 const TeamSection = () => {
@@ -35,7 +55,8 @@ const TeamSection = () => {
               Konsultasi Gratis
             </span>
             <a
-              href="#contact"
+              href="https://wa.me/6281234086100"
+              target="_blank"
               className="inline-flex items-center px-5 py-2 rounded-full bg-primary text-primary-foreground text-sm font-medium"
             >
               Hubungi Kami
@@ -45,41 +66,51 @@ const TeamSection = () => {
 
         {/* Team List */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-          {teamMembers.map((member, index) => (
-            <motion.div
-              key={member.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1, duration: 0.5 }}
-              className="group cursor-pointer"
-            >
-              <div className="relative w-28 h-28 lg:w-32 lg:h-32 mx-auto mb-4 rounded-full overflow-hidden border-2 border-border group-hover:border-accent transition-colors">
-                <img
-                  src={member.image}
-                  alt={member.name}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                />
-              </div>
+          {teamMembers.map((member, index) => {
+            const message = encodeURIComponent(
+              `Halo ${member.name}, saya tertarik untuk memulai usaha. Bisa dibantu?`
+            );
 
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="font-heading text-base text-foreground">
-                    {member.name}
-                  </h3>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wide">
-                    {member.role}
-                  </p>
+            const waLink = `https://wa.me/${member.phone}?text=${message}`;
+
+            return (
+              <motion.a
+                href={waLink}
+                target="_blank"
+                key={member.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1, duration: 0.5 }}
+                className="group cursor-pointer block"
+              >
+                <div className="relative w-28 h-28 lg:w-32 lg:h-32 mx-auto mb-4 rounded-full overflow-hidden border-2 border-border group-hover:border-accent transition-colors">
+                  <img
+                    src={member.image}
+                    alt={member.name}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
                 </div>
 
-                <ArrowUpRight
-                  size={16}
-                  className="text-muted-foreground group-hover:text-accent-foreground transition-colors"
-                />
-              </div>
-            </motion.div>
-          ))}
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="font-heading text-base text-foreground">
+                      {member.name}
+                    </h3>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wide">
+                      {member.role}
+                    </p>
+                  </div>
+
+                  <ArrowUpRight
+                    size={16}
+                    className="text-muted-foreground group-hover:text-accent-foreground transition-colors"
+                  />
+                </div>
+              </motion.a>
+            );
+          })}
         </div>
 
       </div>
