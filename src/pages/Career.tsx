@@ -20,13 +20,13 @@ import { supabase } from "@/lib/supabase";
 
 const careers = [
   {
-  icon: Users,
-  title: "Manager Operasional",
-  type: "Full-time",
-  location: "Jepara, Jawa Tengah",
-  description:
+    icon: Users,
+    title: "Manager Operasional",
+    type: "Full-time",
+    location: "Jepara, Jawa Tengah",
+    description:
     "Bertanggung jawab mengelola operasional usaha secara keseluruhan, memastikan semua outlet berjalan lancar dan sesuai standar.",
-  requirements: [
+    responsibilities: [
     "Usia maksimal 35 tahun",
     "Pendidikan minimal S1 Manajemen, Bisnis atau bidang terkait",
     "Pengalaman minimal 5 tahun di posisi manajerial waralaba/franchise dengan minimal 3 tahun di industri F&B",
@@ -38,13 +38,13 @@ const careers = [
     ],
   },
   {
-  icon: TrendingUp,
-  title: "Staff Logistik",
-  type: "Full-time",
-  location: "Jepara, Jawa Tengah",
-  description:
+    icon: TrendingUp,
+    title: "Staff Logistik",
+    type: "Full-time",
+    location: "Jepara, Jawa Tengah",
+    description:
     "Mengelola pengadaan dan distribusi bahan baku agar operasional usaha berjalan lancar tanpa hambatan.",
-  requirements: [
+    responsibilities: [
     "Jujur, ulet, dan enerjik",
     "Laki-laki",
     "Belum menikah",
