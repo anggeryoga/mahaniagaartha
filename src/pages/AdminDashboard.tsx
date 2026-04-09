@@ -3,7 +3,7 @@ import { supabase } from "@/lib/supabase";
 import { 
   Search, Eye, Trash2, Download, FileText, 
   User, Mail, Phone, ExternalLink, Calendar,
-  Lock, LogOut, ArrowLeft
+  Lock, LogOut, ArrowLeft, Users, Clock, CheckCircle, XCircle
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -21,7 +21,6 @@ const AdminDashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [updateLoading, setUpdateLoading] = useState(false);
 
-  // Cek sesi login saat halaman dimuat
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
@@ -36,7 +35,6 @@ const AdminDashboard = () => {
     return () => subscription.unsubscribe();
   }, []);
 
-  // === FUNGSI LOGIN & LOGOUT ===
   const handleLogin = async (e: any) => {
     e.preventDefault();
     setLoginLoading(true);
@@ -52,10 +50,9 @@ const AdminDashboard = () => {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    setApplications([]); // Kosongkan data setelah logout
+    setApplications([]); 
   };
 
-  // === FUNGSI CRUD DASHBOARD ===
   const fetchApplications = async () => {
     setLoading(true);
     try {
@@ -95,7 +92,7 @@ const AdminDashboard = () => {
       status: formData.get("status"),
       score: formData.get("score") ? parseInt(formData.get("score") as string) : null,
       notes: formData.get("notes"),
-      updated_at: new Date().toISOString() // Update waktu agar pelamar tahu kapan diproses
+      updated_at: new Date().toISOString() 
     };
 
     try {
@@ -116,7 +113,6 @@ const AdminDashboard = () => {
     }
   };
 
-  // Helper UI
   const getStatusColor = (status: string) => {
     switch (status?.toLowerCase()) {
       case "pending": return "bg-yellow-100 text-yellow-800 border-yellow-200";
@@ -134,9 +130,11 @@ const AdminDashboard = () => {
     });
   };
 
-  // ==========================================
-  // TAMPILAN 1: FORM LOGIN (JIKA BELUM LOGIN)
-  // ==========================================
+  // Kalkulasi Statistik
+  const totalApps = applications.length;
+  const pendingApps = applications.filter(a => !a.status || a.status.toLowerCase() === 'pending').length;
+  const acceptedApps = applications.filter(a => a.status?.toLowerCase() === 'accepted').length;
+
   if (!session) {
     return (
       <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
@@ -144,37 +142,37 @@ const AdminDashboard = () => {
           <ArrowLeft size={16} /> Kembali ke Website
         </Link>
 
-        <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md border border-gray-100">
+        <div className="bg-white p-8 rounded-3xl shadow-xl w-full max-w-md border border-gray-100">
           <div className="flex justify-center mb-6">
             <div className="p-4 bg-primary/10 rounded-full text-primary">
               <Lock size={32} />
             </div>
           </div>
           <h1 className="text-2xl font-bold text-center text-gray-900 mb-2">Portal Admin HRD</h1>
-          <p className="text-center text-gray-500 mb-8">Silakan login untuk mengelola lamaran.</p>
+          <p className="text-center text-gray-500 mb-8 text-sm">Silakan login untuk mengelola lamaran masuk.</p>
           
           <form onSubmit={handleLogin} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email HRD</label>
+              <label className="block text-sm font-bold text-gray-700 mb-1">Email HRD</label>
               <input 
                 type="email" required 
                 value={email} onChange={(e) => setEmail(e.target.value)} 
                 placeholder="admin@perusahaan.com"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition" 
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition" 
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+              <label className="block text-sm font-bold text-gray-700 mb-1">Password</label>
               <input 
                 type="password" required 
                 value={password} onChange={(e) => setPassword(e.target.value)} 
                 placeholder="••••••••"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition" 
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition" 
               />
             </div>
             <button 
               type="submit" disabled={loginLoading} 
-              className="w-full bg-primary text-white py-3 rounded-lg font-medium hover:bg-primary/90 transition flex justify-center items-center"
+              className="w-full bg-primary text-white py-3.5 rounded-xl font-bold hover:opacity-90 transition shadow-lg shadow-primary/20"
             >
               {loginLoading ? "Memeriksa Kredensial..." : "Masuk ke Dashboard"}
             </button>
@@ -184,88 +182,102 @@ const AdminDashboard = () => {
     );
   }
 
-  // ==========================================
-  // TAMPILAN 2: DASHBOARD (JIKA SUDAH LOGIN)
-  // ==========================================
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#F8FAFC]">
       {/* HEADER KHUSUS ADMIN */}
       <div className="bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center sticky top-0 z-10 shadow-sm">
         <div className="flex items-center gap-4">
-          <div className="w-8 h-8 bg-primary rounded flex items-center justify-center text-white font-bold">HR</div>
-          <h1 className="text-xl font-bold text-gray-900 hidden sm:block">Maha Niaga Artha - Recruitment</h1>
+          <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white font-bold shadow-md shadow-primary/20">HR</div>
+          <div>
+            <h1 className="text-lg font-bold text-gray-900 leading-none">Maha Niaga Artha</h1>
+            <p className="text-xs text-gray-500 mt-1 font-medium tracking-wide uppercase">Recruitment Dashboard</p>
+          </div>
         </div>
         <button 
           onClick={handleLogout} 
-          className="flex items-center gap-2 text-sm font-medium text-red-600 hover:bg-red-50 px-4 py-2 rounded-lg transition"
+          className="flex items-center gap-2 text-sm font-bold text-red-600 hover:bg-red-50 px-4 py-2.5 rounded-xl transition"
         >
-          <LogOut size={16} /> Logout Sistem
+          <LogOut size={16} /> Logout
         </button>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900">Daftar Pelamar Masuk</h2>
-            <p className="text-gray-500 mt-1">Kelola dan review kandidat karyawan.</p>
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
+        
+        {/* STATS CARDS */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex items-center gap-4">
+            <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center"><Users size={24}/></div>
+            <div>
+              <p className="text-sm font-medium text-gray-500">Total Pelamar</p>
+              <p className="text-2xl font-bold text-gray-900">{totalApps}</p>
+            </div>
           </div>
-          <div className="bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-200 flex items-center gap-2">
-            <span className="text-sm text-gray-500">Total Data: </span>
-            <span className="font-bold text-primary text-lg">{applications.length}</span>
+          <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex items-center gap-4">
+            <div className="w-12 h-12 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center"><Clock size={24}/></div>
+            <div>
+              <p className="text-sm font-medium text-gray-500">Menunggu Review</p>
+              <p className="text-2xl font-bold text-gray-900">{pendingApps}</p>
+            </div>
+          </div>
+          <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex items-center gap-4">
+            <div className="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center"><CheckCircle size={24}/></div>
+            <div>
+              <p className="text-sm font-medium text-gray-500">Kandidat Diterima</p>
+              <p className="text-2xl font-bold text-gray-900">{acceptedApps}</p>
+            </div>
           </div>
         </div>
 
         {/* TABEL DATA */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+          <div className="p-6 border-b border-gray-200 flex justify-between items-center bg-white">
+            <h2 className="text-lg font-bold text-gray-900">Data Pelamar Terbaru</h2>
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+              <input type="text" placeholder="Cari nama/posisi..." className="pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 w-64 bg-gray-50"/>
+            </div>
+          </div>
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-gray-50 border-b border-gray-200 text-sm text-gray-600">
-                  <th className="p-4 font-medium">Informasi Pelamar</th>
-                  <th className="p-4 font-medium">Posisi</th>
-                  <th className="p-4 font-medium">Waktu Masuk</th>
-                  <th className="p-4 font-medium">Status Tahapan</th>
-                  <th className="p-4 font-medium">Aksi</th>
+                <tr className="bg-gray-50/50 border-b border-gray-200 text-sm text-gray-500 uppercase tracking-wider">
+                  <th className="p-4 font-semibold">Informasi Pelamar</th>
+                  <th className="p-4 font-semibold">Posisi Dilamar</th>
+                  <th className="p-4 font-semibold">Waktu Apply</th>
+                  <th className="p-4 font-semibold">Status</th>
+                  <th className="p-4 font-semibold text-right">Aksi</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
+              <tbody className="divide-y divide-gray-100">
                 {loading ? (
                   <tr><td colSpan={5} className="p-8 text-center text-gray-500">Memuat data pelamar...</td></tr>
                 ) : applications.length === 0 ? (
                   <tr><td colSpan={5} className="p-8 text-center text-gray-500">Belum ada lamaran masuk.</td></tr>
                 ) : (
                   applications.map((app) => (
-                    <tr key={app.id} className="hover:bg-gray-50 transition-colors">
+                    <tr key={app.id} className="hover:bg-blue-50/30 transition-colors">
                       <td className="p-4">
-                        <div className="font-semibold text-gray-900">{app.nama}</div>
-                        <div className="text-sm text-gray-500 flex items-center gap-1 mt-0.5"><Mail size={12}/> {app.email}</div>
+                        <div className="font-bold text-gray-900">{app.nama}</div>
+                        <div className="text-sm text-gray-500 mt-0.5">{app.email}</div>
                       </td>
-                      <td className="p-4 text-sm font-medium text-gray-700">{app.posisi}</td>
+                      <td className="p-4 text-sm font-bold text-gray-700">{app.posisi}</td>
                       <td className="p-4 text-sm text-gray-500">{formatDate(app.created_at)}</td>
                       <td className="p-4">
-                        <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(app.status)}`}>
+                        <span className={`px-3 py-1 rounded-full text-xs font-bold border ${getStatusColor(app.status)}`}>
                           {app.status || "Pending"}
                         </span>
                       </td>
-                      <td className="p-4">
-                        <div className="flex items-center gap-2">
+                      <td className="p-4 text-right">
+                        <div className="flex items-center justify-end gap-2">
                           <button 
                             onClick={() => { setSelectedApp(app); setIsModalOpen(true); }}
-                            className="p-2 text-blue-600 hover:bg-blue-100 rounded-md transition" title="Review Lamaran"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 hover:text-blue-700 rounded-lg text-sm font-semibold transition"
                           >
-                            <Eye size={18} />
+                            <Eye size={16} /> Review
                           </button>
-                          {app.cv_url && (
-                            <a 
-                              href={app.cv_url} target="_blank" rel="noopener noreferrer"
-                              className="p-2 text-green-600 hover:bg-green-100 rounded-md transition" title="Download CV"
-                            >
-                              <Download size={18} />
-                            </a>
-                          )}
                           <button 
                             onClick={() => handleDelete(app.id)}
-                            className="p-2 text-red-600 hover:bg-red-100 rounded-md transition" title="Hapus Data"
+                            className="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition" title="Hapus Data"
                           >
                             <Trash2 size={18} />
                           </button>
@@ -281,119 +293,135 @@ const AdminDashboard = () => {
       </div>
 
       {/* ========================================== */}
-      {/* MODAL REVIEW & UPDATE STATUS HRD */}
+      {/* MODAL REVIEW SPLIT-SCREEN (DETAIL & PREVIEW) */}
       {/* ========================================== */}
       {isModalOpen && selectedApp && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm">
-          <div className="bg-white w-full max-w-2xl rounded-2xl shadow-2xl max-h-[90vh] flex flex-col overflow-hidden">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 backdrop-blur-sm p-4 md:p-8">
+          <div className="bg-white w-full max-w-6xl h-full max-h-[90vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden">
             
-            <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+            {/* Modal Header */}
+            <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-white z-10 shadow-sm">
               <div>
-                <h3 className="text-xl font-bold text-gray-900">Review Kandidat</h3>
-                <p className="text-sm text-gray-500">ID: {selectedApp.id.split('-')[0]}...</p>
+                <h3 className="text-xl font-bold text-gray-900">Review Kandidat: {selectedApp.nama}</h3>
+                <p className="text-sm text-primary font-semibold mt-0.5">{selectedApp.posisi}</p>
               </div>
-              <button onClick={() => setIsModalOpen(false)} className="p-2 bg-white rounded-full text-gray-500 hover:text-gray-900 shadow-sm border">✕</button>
+              <button onClick={() => setIsModalOpen(false)} className="p-2 bg-gray-100 rounded-full text-gray-600 hover:bg-gray-200 transition">
+                <XCircle size={24} />
+              </button>
             </div>
 
-            <div className="p-6 overflow-y-auto flex-1 custom-scrollbar">
-              {/* Info Dasar */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-6 mb-6">
-                <div>
-                  <p className="text-xs text-gray-400 font-semibold uppercase tracking-wider mb-1">Nama Lengkap</p>
-                  <p className="font-medium text-gray-900 flex items-center gap-2"><User size={16} className="text-primary"/> {selectedApp.nama}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-400 font-semibold uppercase tracking-wider mb-1">Posisi Dilamar</p>
-                  <p className="font-medium text-gray-900 flex items-center gap-2"><FileText size={16} className="text-primary"/> {selectedApp.posisi}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-400 font-semibold uppercase tracking-wider mb-1">Kontak</p>
-                  <div className="space-y-1">
-                    <p className="text-sm text-gray-800 flex items-center gap-2"><Mail size={14} className="text-gray-400"/> {selectedApp.email}</p>
-                    <p className="text-sm text-gray-800 flex items-center gap-2"><Phone size={14} className="text-gray-400"/> {selectedApp.whatsapp}</p>
-                  </div>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-400 font-semibold uppercase tracking-wider mb-1">Tautan / Link</p>
-                  <div className="space-y-1">
-                    {selectedApp.linkedin ? (
-                      <a href={selectedApp.linkedin} target="_blank" className="text-sm text-blue-600 hover:underline flex items-center gap-1 font-medium">LinkedIn <ExternalLink size={12}/></a>
-                    ) : <span className="text-sm text-gray-400">LinkedIn: -</span>}
-                    {selectedApp.portfolio ? (
-                      <a href={selectedApp.portfolio} target="_blank" className="text-sm text-blue-600 hover:underline flex items-center gap-1 font-medium">Portfolio <ExternalLink size={12}/></a>
-                    ) : <span className="text-sm text-gray-400 block">Portfolio: -</span>}
-                  </div>
-                </div>
-              </div>
-
-              <div className="mb-8 bg-blue-50 border border-blue-100 p-4 rounded-xl">
-                <p className="text-xs text-blue-500 font-bold uppercase tracking-wider mb-2">Pesan Singkat / Cover Letter</p>
-                <p className="text-blue-900 text-sm whitespace-pre-wrap leading-relaxed">{selectedApp.pesan || "Pelamar tidak menyertakan pesan."}</p>
-              </div>
-
-              <hr className="my-6 border-gray-200 border-dashed" />
-
-              {/* FORM PENILAIAN HR */}
-              <form onSubmit={handleUpdate} className="space-y-5 bg-gray-50 p-5 rounded-xl border border-gray-200">
-                <h4 className="font-bold text-gray-900 mb-2 flex items-center gap-2">📝 Penilaian & Tindakan HRD</h4>
+            {/* Modal Body (2 Columns) */}
+            <div className="flex flex-col lg:flex-row flex-1 overflow-hidden">
+              
+              {/* Kolom Kiri: Data & Form */}
+              <div className="w-full lg:w-1/2 p-6 overflow-y-auto custom-scrollbar bg-gray-50">
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1">Ubah Status</label>
-                    <select 
-                      name="status" 
-                      defaultValue={selectedApp.status || "Pending"} 
-                      className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white text-gray-800 font-medium"
+                <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm mb-6">
+                  <h4 className="text-sm font-bold text-gray-900 mb-4 border-b pb-2">Informasi Kontak & Tautan</h4>
+                  <div className="space-y-3">
+                    <p className="flex justify-between text-sm"><span className="text-gray-500">Email:</span> <span className="font-semibold text-gray-900">{selectedApp.email}</span></p>
+                    <p className="flex justify-between text-sm"><span className="text-gray-500">WhatsApp:</span> <span className="font-semibold text-gray-900">{selectedApp.whatsapp}</span></p>
+                    <p className="flex justify-between text-sm">
+                      <span className="text-gray-500">LinkedIn:</span> 
+                      {selectedApp.linkedin ? <a href={selectedApp.linkedin} target="_blank" className="text-blue-600 font-semibold hover:underline">Buka Profil</a> : <span>-</span>}
+                    </p>
+                    <p className="flex justify-between text-sm">
+                      <span className="text-gray-500">Portfolio:</span> 
+                      {selectedApp.portfolio ? <a href={selectedApp.portfolio} target="_blank" className="text-blue-600 font-semibold hover:underline">Buka Link</a> : <span>-</span>}
+                    </p>
+                  </div>
+                </div>
+
+                {selectedApp.pesan && (
+                  <div className="bg-blue-50/50 border border-blue-100 p-5 rounded-2xl mb-6">
+                    <h4 className="text-xs text-blue-600 font-bold uppercase tracking-wider mb-2">Cover Letter / Pesan</h4>
+                    <p className="text-gray-700 text-sm whitespace-pre-wrap leading-relaxed">{selectedApp.pesan}</p>
+                  </div>
+                )}
+
+                {/* Form Keputusan HR */}
+                <form onSubmit={handleUpdate} className="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm">
+                  <h4 className="font-bold text-gray-900 mb-4 flex items-center gap-2 text-lg">📝 Keputusan HRD</h4>
+                  
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                      <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5">Update Status</label>
+                      <select 
+                        name="status" 
+                        defaultValue={selectedApp.status || "Pending"} 
+                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent font-semibold text-gray-800 bg-gray-50"
+                      >
+                        <option value="Pending">Pending (Belum Proses)</option>
+                        <option value="Review">Review (Sedang Dipelajari)</option>
+                        <option value="Interview">Interview (Panggilan)</option>
+                        <option value="Accepted">Accepted (Diterima)</option>
+                        <option value="Rejected">Rejected (Ditolak)</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5">Skor Penilaian</label>
+                      <input 
+                        type="number" name="score" min="0" max="100"
+                        defaultValue={selectedApp.score || ""} placeholder="0-100"
+                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent font-semibold text-gray-800 bg-gray-50"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mb-6">
+                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5">Catatan Internal (Rahasia)</label>
+                    <textarea 
+                      name="notes" rows={3} defaultValue={selectedApp.notes || ""}
+                      placeholder="Catatan hasil wawancara atau kualifikasi..."
+                      className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent text-sm bg-gray-50 resize-none"
+                    ></textarea>
+                  </div>
+
+                  <button 
+                    type="submit" disabled={updateLoading}
+                    className="w-full py-3.5 bg-primary text-white font-bold rounded-xl hover:opacity-90 transition shadow-lg shadow-primary/20"
+                  >
+                    {updateLoading ? "Menyimpan Data..." : "Simpan Keputusan"}
+                  </button>
+                </form>
+              </div>
+
+              {/* Kolom Kanan: PREVIEW DOKUMEN CV */}
+              <div className="w-full lg:w-1/2 bg-gray-200 flex flex-col border-l border-gray-200">
+                <div className="p-4 bg-white border-b border-gray-200 flex justify-between items-center shadow-sm z-10">
+                  <h4 className="font-bold text-gray-800 flex items-center gap-2"><FileText size={18}/> Preview Dokumen CV</h4>
+                  {selectedApp.cv_url && (
+                    <a 
+                      href={selectedApp.cv_url} target="_blank" rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-semibold hover:bg-gray-800 transition shadow-md"
                     >
-                      <option value="Pending">Pending (Belum diproses)</option>
-                      <option value="Review">Review (Sedang dipelajari)</option>
-                      <option value="Interview">Interview (Panggilan Wawancara)</option>
-                      <option value="Accepted">Accepted (Diterima Kerja)</option>
-                      <option value="Rejected">Rejected (Ditolak)</option>
-                    </select>
-                    <p className="text-[11px] text-gray-500 mt-1">*Status ini bisa dilihat oleh pelamar</p>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1">Skor Kandidat</label>
-                    <input 
-                      type="number" 
-                      name="score" 
-                      min="0" max="100"
-                      defaultValue={selectedApp.score || ""} 
-                      placeholder="0 - 100"
-                      className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white"
+                      <Download size={16} /> Download
+                    </a>
+                  )}
+                </div>
+                
+                <div className="flex-1 w-full bg-gray-100 relative">
+                  {selectedApp.cv_url ? (
+                    // Iframe untuk memunculkan PDF langsung di website
+                    <iframe 
+                      src={selectedApp.cv_url} 
+                      className="w-full h-full border-0 absolute inset-0"
+                      title="CV Preview"
                     />
-                  </div>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center h-full text-gray-400">
+                      <FileText size={48} className="mb-3 opacity-50"/>
+                      <p className="font-semibold">Kandidat tidak menyertakan file CV</p>
+                    </div>
+                  )}
                 </div>
+                
+                {/* Note kecil jika browser tidak support embed docx */}
+                <div className="bg-yellow-50 p-2 text-center border-t border-yellow-200 text-xs text-yellow-700">
+                  *Jika file berformat DOCX dan tidak muncul di atas, silakan klik tombol Download.
+                </div>
+              </div>
 
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">Catatan Internal Rahasia</label>
-                  <textarea 
-                    name="notes" 
-                    rows={3} 
-                    defaultValue={selectedApp.notes || ""}
-                    placeholder="Contoh: Kurang pengalaman di bidang pajak, tapi komunikasi bagus..."
-                    className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white resize-none"
-                  ></textarea>
-                </div>
-
-                <div className="pt-2 flex gap-3 justify-end">
-                  <button 
-                    type="button" 
-                    onClick={() => setIsModalOpen(false)}
-                    className="px-5 py-2.5 text-gray-600 font-medium bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition"
-                  >
-                    Batal
-                  </button>
-                  <button 
-                    type="submit" 
-                    disabled={updateLoading}
-                    className="px-6 py-2.5 bg-primary text-white font-medium rounded-lg hover:bg-primary/90 transition shadow-md"
-                  >
-                    {updateLoading ? "Menyimpan..." : "Simpan Keputusan"}
-                  </button>
-                </div>
-              </form>
             </div>
           </div>
         </div>
