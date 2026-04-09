@@ -10,7 +10,7 @@ const teamMembers = [
   },
   {
     name: "Livya Ayu",
-    role: "Sales Marketing",
+    role: "Senior Sales Marketing",
     image: "/dm/dm%201.webp",
     phone: "6282124952606",
   },
