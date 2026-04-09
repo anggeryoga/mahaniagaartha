@@ -17,7 +17,11 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const location = useLocation();
 
-  const renderLink = (link: typeof navLinks[0], className: string, onClick?: () => void) => {
+  const renderLink = (
+    link: typeof navLinks[0],
+    className: string,
+    onClick?: () => void
+  ) => {
     if (link.route) {
       return (
         <Link
@@ -34,12 +38,7 @@ const Navbar = () => {
     const href = location.pathname !== "/" ? `/${link.href}` : link.href;
 
     return (
-      <a
-        key={link.label}
-        href={href}
-        className={className}
-        onClick={onClick}
-      >
+      <a key={link.label} href={href} className={className} onClick={onClick}>
         {link.label}
       </a>
     );
@@ -48,18 +47,14 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
       <div className="container mx-auto flex items-center justify-between h-16 px-4 lg:px-8">
-        
-<Link
-  to="/"
-  className="font-heading text-2xl tracking-tight leading-none"
->
-  <span className="font-bold text-foreground">
-    Maha Niaga
-  </span>{" "}
-  <span className="font-extrabold text-primary">
-    Artha
-  </span>
-</Link>
+        {/* Logo */}
+        <Link
+          to="/"
+          className="font-heading text-2xl tracking-tight leading-none"
+        >
+          <span className="font-bold text-foreground">Maha Niaga</span>{" "}
+          <span className="font-extrabold text-primary">Artha</span>
+        </Link>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-8">
@@ -71,13 +66,21 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* CTA */}
-        <a
-          href=""
-          className="hidden md:inline-flex items-center px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity"
-        >
-          Konsultasi Gratis
-        </a>
+        {/* Desktop Actions (Login & CTA) */}
+        <div className="hidden md:flex items-center gap-3">
+          <Link
+            to="/admin-hrd"
+            className="inline-flex items-center px-5 py-2.5 rounded-full border border-primary text-primary text-sm font-medium hover:bg-primary/10 transition-colors"
+          >
+            Login
+          </Link>
+          <a
+            href="#contact"
+            className="inline-flex items-center px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity"
+          >
+            Konsultasi Gratis
+          </a>
+        </div>
 
         {/* Mobile Toggle */}
         <button
@@ -107,13 +110,23 @@ const Navbar = () => {
                 )
               )}
 
-              <a
-                href="#contact"
-                className="inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-medium"
-                onClick={() => setOpen(false)}
-              >
-                Konsultasi Gratis
-              </a>
+              {/* Mobile Actions (Login & CTA) */}
+              <div className="flex flex-col gap-3 mt-4 pt-4 border-t border-border">
+                <Link
+                  to="/admin-hrd"
+                  className="inline-flex items-center justify-center px-5 py-2.5 rounded-full border border-primary text-primary text-sm font-medium hover:bg-primary/10 transition-colors"
+                  onClick={() => setOpen(false)}
+                >
+                  Login
+                </Link>
+                <a
+                  href="#contact"
+                  className="inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity"
+                  onClick={() => setOpen(false)}
+                >
+                  Konsultasi Gratis
+                </a>
+              </div>
             </div>
           </motion.div>
         )}
