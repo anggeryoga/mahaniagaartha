@@ -74,7 +74,7 @@ const TeamSection = () => {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
           {teamMembers.map((member, index) => {
             const message = encodeURIComponent(
-              `Halo ${member.name}, saya tertarik untuk memulai usaha. Bisa dibantu?`
+              `Halo ${member.name}, saya tertarik untuk memulai usaha dari Website Perusahaan. Bisa dibantu?`
             );
 
             const waLink = `https://wa.me/${member.phone}?text=${message}`;

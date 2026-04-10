@@ -28,8 +28,7 @@ const CTASection = () => {
             
             {/* Primary CTA */}
             <a
-              href="https://wa.me/6281212126722?text=Halo%20Mahania%20Gartha%2C%20saya%20tertarik%20untuk%20memulai%20usaha.%20Bisa%20dibantu%3F"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-accent text-accent-foreground font-medium text-sm hover:opacity-90 transition-opacity"
+href="https://wa.me/6281212126722?text=Halo%20Maha%20Niaga%20Artha,%20saya%20mendapatkan%20informasi%20dari%20website%20resmi%20dan%20tertarik%20untuk%20memulai%20usaha.%20Bisa%20dibantu%3F"              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-accent text-accent-foreground font-medium text-sm hover:opacity-90 transition-opacity"
             >
               Konsultasi via WhatsApp
               <ArrowRight size={16} />
