@@ -49,7 +49,7 @@ href="https://wa.me/6281212126722?text=Halo%20Maha%20Niaga%20Artha,%20saya%20men
             
             <span className="flex items-center gap-2">
               <Mail size={14} />
-              cvmahaniagaartha.sms@gmail.com
+              cvmahaniagaartha.hrd@gmail.com
             </span>
 
             <span className="flex items-center gap-2">
