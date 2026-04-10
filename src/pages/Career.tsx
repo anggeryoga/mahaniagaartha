@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Helmet } from "react-helmet-async"; // Import Helmet untuk SEO
 import {
   TrendingUp,
   Users,
@@ -25,16 +26,16 @@ const careers = [
     type: "Full-time",
     location: "Jepara, Jawa Tengah",
     description:
-    "Bertanggung jawab mengelola operasional usaha secara keseluruhan, memastikan semua outlet berjalan lancar dan sesuai standar.",
+      "Bertanggung jawab mengelola operasional usaha secara keseluruhan, memastikan semua outlet berjalan lancar dan sesuai standar. Peluang karir terbaik di Jepara untuk profesional F&B.",
     responsibilities: [
-    "Usia maksimal 35 tahun",
-    "Pendidikan minimal S1 Manajemen, Bisnis atau bidang terkait",
-    "Pengalaman minimal 5 tahun di posisi manajerial waralaba/franchise dengan minimal 3 tahun di industri F&B",
-    "Memiliki kemampuan komunikasi, negosiasi, dan kepemimpinan yang baik",
-    "Menguasai operasional F&B, analisa bisnis, forecasting, dan budgeting perusahaan",
-    "Mampu menganalisis strategi perusahaan",
-    "Memahami product knowledge, quality management, dan operational management",
-    "Bersedia ditempatkan di Jepara",
+      "Usia maksimal 35 tahun",
+      "Pendidikan minimal S1 Manajemen, Bisnis atau bidang terkait",
+      "Pengalaman minimal 5 tahun di posisi manajerial waralaba/franchise dengan minimal 3 tahun di industri F&B",
+      "Memiliki kemampuan komunikasi, negosiasi, dan kepemimpinan yang baik",
+      "Menguasai operasional F&B, analisa bisnis, forecasting, dan budgeting perusahaan",
+      "Mampu menganalisis strategi perusahaan",
+      "Memahami product knowledge, quality management, dan operational management",
+      "Bersedia ditempatkan di Jepara",
     ],
   },
   {
@@ -43,17 +44,49 @@ const careers = [
     type: "Full-time",
     location: "Jepara, Jawa Tengah",
     description:
-    "Mengelola pengadaan dan distribusi bahan baku agar operasional usaha berjalan lancar tanpa hambatan.",
+      "Mengelola pengadaan dan distribusi bahan baku agar operasional usaha berjalan lancar tanpa hambatan. Cocok untuk Anda yang mencari loker logistik di area Jepara.",
     responsibilities: [
-    "Jujur, ulet, dan enerjik",
-    "Laki-laki",
-    "Belum menikah",
-    "Usia maksimal 28 tahun",
-    "Lulusan minimal SMA/sederajat",
-    "Memiliki sifat pekerja keras",
+      "Jujur, ulet, dan enerjik",
+      "Laki-laki",
+      "Belum menikah",
+      "Usia maksimal 28 tahun",
+      "Lulusan minimal SMA/sederajat",
+      "Memiliki sifat pekerja keras",
     ],
   },
 ];
+
+// SCHEMA MARKUP UNTUK GOOGLE JOBS (SEO TINGKAT TINGGI)
+// Ini yang membuat loker muncul di widget Google Jobs Page 1 tanpa perlu spam kata.
+const generateJobSchema = () => {
+  const jobSchemas = careers.map((job) => ({
+    "@context": "https://schema.org/",
+    "@type": "JobPosting",
+    title: job.title,
+    description: job.description,
+    hiringOrganization: {
+      "@type": "Organization",
+      name: "Maha Niaga Artha",
+      logo: "https://domainkamu.com/logo.png", // Ganti dengan URL logo asli
+    },
+    jobLocation: {
+      "@type": "Place",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Jepara",
+        addressRegion: "Jawa Tengah",
+        addressCountry: "ID",
+      },
+    },
+    employmentType: "FULL_TIME",
+    datePosted: new Date().toISOString().split("T")[0],
+    validThrough: new Date(new Date().setMonth(new Date().getMonth() + 1))
+      .toISOString()
+      .split("T")[0], // Valid 1 bulan dari sekarang
+  }));
+
+  return JSON.stringify(jobSchemas);
+};
 
 const Career = () => {
   const [selectedJob, setSelectedJob] = useState<any>(null);
@@ -89,40 +122,40 @@ const Career = () => {
 
     try {
       if (!file || file.size === 0) throw new Error("CV wajib diupload");
-      if (file.size > 5 * 1024 * 1024) throw new Error("Ukuran file CV maksimal 5MB");
+      if (file.size > 5 * 1024 * 1024)
+        throw new Error("Ukuran file CV maksimal 5MB");
 
       const fileExt = file.name.split(".").pop();
       const randomString = Math.random().toString(36).substring(2, 8);
       const safeFileName = `cv-${Date.now()}-${randomString}.${fileExt}`;
 
-      // Upload ke Supabase Storage
       const { error: uploadError } = await supabase.storage
         .from("mahastorage")
         .upload(safeFileName, file, { cacheControl: "3600", upsert: false });
 
       if (uploadError) throw uploadError;
 
-      // Ambil Public URL
       const { data: urlData } = supabase.storage
         .from("mahastorage")
         .getPublicUrl(safeFileName);
       const cvUrl = urlData.publicUrl;
 
-      // Insert Data ke Supabase Database
-      const { error: insertError } = await supabase.from("applications").insert([
-        {
-          posisi: formData.get("posisi"),
-          nama: formData.get("nama"),
-          email: formData.get("email"),
-          whatsapp: formData.get("whatsapp"),
-          linkedin: formData.get("linkedin") || null,
-          portfolio: formData.get("portfolio") || null,
-          pesan: formData.get("pesan") || null,
-          cv_url: cvUrl,
-          status: "Pending",
-          source: "Website",
-        },
-      ]);
+      const { error: insertError } = await supabase
+        .from("applications")
+        .insert([
+          {
+            posisi: formData.get("posisi"),
+            nama: formData.get("nama"),
+            email: formData.get("email"),
+            whatsapp: formData.get("whatsapp"),
+            linkedin: formData.get("linkedin") || null,
+            portfolio: formData.get("portfolio") || null,
+            pesan: formData.get("pesan") || null,
+            cv_url: cvUrl,
+            status: "Pending",
+            source: "Website",
+          },
+        ]);
 
       if (insertError) throw insertError;
 
@@ -131,9 +164,7 @@ const Career = () => {
       const posisiLamar = formData.get("posisi") as string;
       const emailUser = formData.get("email") as string;
 
-      // ==========================================
-      // 1. NOTIFIKASI WA KE PELAMAR
-      // ==========================================
+      // Notif WA Pelamar
       const waMessageApplicant = `Halo *${namaUser}*! 👋\n\nTerima kasih telah mengirimkan lamaran untuk posisi *${posisiLamar}* di *Maha Niaga Artha*.\n\nData dan CV Anda telah berhasil kami terima ke dalam sistem. Tim HRD kami akan segera melakukan review terhadap kualifikasi Anda.\n\nAnda dapat mengecek status lamaran secara berkala melalui menu "Karir" di website kami dengan menggunakan Email dan Nomor WhatsApp ini.\n\nSemoga sukses!\n\nSalam Hangat,\n*Tim HRD Maha Niaga Artha*`;
 
       try {
@@ -151,9 +182,7 @@ const Career = () => {
         console.error("Gagal WA Pelamar:", err);
       }
 
-      // ==========================================
-      // 2. NOTIFIKASI WA KE HRD (085155145788)
-      // ==========================================
+      // Notif WA HRD
       const hrPhone = "085155145788";
       const hrMessage = `🚨 *LAMARAN BARU MASUK* 🚨\n\nHalo Tim HRD,\nAda lamaran baru masuk melalui website dengan rincian:\n\n👤 *Nama*: ${namaUser}\n💼 *Posisi*: ${posisiLamar}\n📞 *WhatsApp*: ${noWa}\n✉️ *Email*: ${emailUser}\n\nSilakan login ke *Admin Dashboard* untuk melihat CV dan melakukan review pelamar.\n\nSemangat kerjanya! 💪`;
 
@@ -171,7 +200,6 @@ const Career = () => {
       } catch (err) {
         console.error("Gagal WA HRD:", err);
       }
-      // ==========================================
 
       alert("Lamaran berhasil dikirim 🚀 Silakan cek WhatsApp Anda.");
       e.target.reset();
@@ -211,17 +239,41 @@ const Career = () => {
 
   const getStatusIcon = (status: string) => {
     switch (status?.toLowerCase()) {
-      case "accepted": return <CheckCircle2 className="w-12 h-12 text-green-500 mb-2" />;
-      case "rejected": return <XCircle className="w-12 h-12 text-red-500 mb-2" />;
-      default: return <Clock className="w-12 h-12 text-blue-500 mb-2" />;
+      case "accepted":
+        return <CheckCircle2 className="w-12 h-12 text-green-500 mb-2" />;
+      case "rejected":
+        return <XCircle className="w-12 h-12 text-red-500 mb-2" />;
+      default:
+        return <Clock className="w-12 h-12 text-blue-500 mb-2" />;
     }
   };
 
   return (
     <div className="min-h-screen bg-background">
+      {/* ================= SEO HELMET ================= */}
+      <Helmet>
+        <title>Lowongan Kerja Jepara Terupdate | Karir Maha Niaga Artha</title>
+        <meta 
+          name="description" 
+          content="Cari lowongan kerja terbaru di Jepara? Maha Niaga Artha membuka kesempatan karir untuk Manager Operasional, Staff Logistik, dan posisi F&B lainnya. Lamar online sekarang!" 
+        />
+        <meta name="keywords" content="Lowongan kerja Jepara, Loker Jepara terbaru, karir Maha Niaga Artha, lowongan manager operasional jepara, loker F&B jepara, lowongan staff logistik" />
+        
+        {/* Open Graph (Untuk share di WA/FB) */}
+        <meta property="og:title" content="Lowongan Kerja di Maha Niaga Artha Jepara" />
+        <meta property="og:description" content="Temukan peluang karir profesional di bidang manajerial dan operasional bersama kami di Jepara." />
+        <meta property="og:type" content="website" />
+        
+        {/* Inject JSON-LD Schema ke Head */}
+        <script type="application/ld+json">
+          {generateJobSchema()}
+        </script>
+      </Helmet>
+      {/* ============================================= */}
+
       <Navbar />
 
-      {/* HERO SECTION */}
+      {/* HERO SECTION - Semantic H1 */}
       <section className="pt-28 pb-16 lg:pt-36 lg:pb-24 bg-primary text-primary-foreground">
         <div className="container mx-auto px-4 lg:px-8">
           <motion.div
@@ -238,34 +290,35 @@ const Career = () => {
               Kembali ke Beranda
             </Link>
 
+            {/* Keyword diselipkan natural di H1 */}
             <h1 className="text-4xl lg:text-5xl font-bold mb-4 tracking-tight">
-              Karir di Maha Niaga Artha
+              Peluang Karir & Lowongan Kerja di Maha Niaga Artha
             </h1>
 
             <p className="text-lg text-primary-foreground/80 leading-relaxed max-w-2xl">
-              Bergabunglah dengan tim kami dan bantu ribuan klien meraih masa depan finansial yang lebih cerah. Kami mencari individu berbakat yang bersemangat.
+              Bergabunglah dengan tim profesional kami di Jepara. Kami mencari individu berbakat yang bersemangat untuk berkembang bersama di industri bisnis dan manajemen operasional.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* WHY JOIN SECTION */}
+      {/* WHY JOIN SECTION - Semantic H2 */}
       <section className="py-16 bg-card border-b border-border">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="text-center mb-12">
             <span className="text-xs font-bold tracking-widest text-primary uppercase mb-3 block">
-              Work With Us
+              Benefit Perusahaan
             </span>
             <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
-              Alasan Bergabung dengan Kami
+              Mengapa Berkarir Bersama Kami?
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { title: "Pertumbuhan Karir", desc: "Jalur karir yang jelas dengan mentorship dan pelatihan berkelanjutan." },
-              { title: "Budaya Kolaboratif", desc: "Lingkungan kerja yang mendukung inovasi dan kerja sama tim." },
-              { title: "Kompensasi Kompetitif", desc: "Paket gaji dan benefit yang menarik sesuai standar industri." },
+              { title: "Pertumbuhan Karir", desc: "Jalur karir yang jelas dengan mentorship dan pelatihan berkelanjutan di bidang operasional." },
+              { title: "Budaya Kolaboratif", desc: "Lingkungan kerja yang mendukung inovasi, produktivitas, dan kerja sama tim yang solid." },
+              { title: "Kompensasi Kompetitif", desc: "Paket gaji bulanan dan benefit yang menarik sesuai standar industri di Jepara." },
             ].map((item, i) => (
               <motion.div
                 key={item.title}
@@ -288,9 +341,9 @@ const Career = () => {
         <div className="container mx-auto px-4 lg:px-8 max-w-4xl">
           <div className="bg-background border border-border rounded-3xl p-6 md:p-10 shadow-sm">
             <div className="text-center mb-8">
-              <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">Sudah Melamar? Cek Status Anda</h2>
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">Cek Status Lamaran Kerja Anda</h2>
               <p className="text-sm md:text-base text-muted-foreground">
-                Masukkan Email dan Nomor WhatsApp yang Anda gunakan saat mendaftar.
+                Masukkan Email dan Nomor WhatsApp yang digunakan saat melamar lowongan.
               </p>
             </div>
 
@@ -310,6 +363,7 @@ const Career = () => {
               <div className="md:col-span-1">
                 <button
                   type="submit" disabled={statusLoading}
+                  aria-label="Cek status lamaran"
                   className="w-full h-full min-h-[50px] bg-primary text-primary-foreground rounded-xl font-bold hover:opacity-90 transition-all flex items-center justify-center gap-2"
                 >
                   {statusLoading ? "..." : <><Search size={18} /> Cek</>}
@@ -333,8 +387,8 @@ const Career = () => {
                 ) : (
                   <div className="flex flex-col items-center">
                     <UserX className="w-12 h-12 text-muted-foreground/50 mb-3" />
-                    <p className="text-foreground font-bold">Data Tidak Ditemukan</p>
-                    <p className="text-sm text-muted-foreground mt-1">Pastikan data yang dimasukkan sudah benar.</p>
+                    <p className="text-foreground font-bold">Data Pelamar Tidak Ditemukan</p>
+                    <p className="text-sm text-muted-foreground mt-1">Pastikan data yang dimasukkan sudah benar sesuai formulir lamaran.</p>
                   </div>
                 )}
               </motion.div>
@@ -344,12 +398,12 @@ const Career = () => {
       </section>
 
       {/* POSISI TERBUKA SECTION */}
-      <section className="py-20 lg:py-28">
+      <section className="py-20 lg:py-28" id="daftar-lowongan">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
             <div>
-              <h2 className="text-3xl lg:text-4xl font-bold text-foreground tracking-tight">Posisi Terbuka</h2>
-              <p className="text-muted-foreground mt-2">Temukan peran yang sesuai dengan passion Anda.</p>
+              <h2 className="text-3xl lg:text-4xl font-bold text-foreground tracking-tight">Daftar Lowongan Kerja Terbaru</h2>
+              <p className="text-muted-foreground mt-2">Temukan peran yang sesuai dengan passion dan kualifikasi Anda.</p>
             </div>
             <div className="px-4 py-2 bg-accent/10 border border-accent/20 rounded-lg">
               <span className="text-sm font-bold text-accent">{careers.length} Posisi Tersedia</span>
@@ -370,6 +424,7 @@ const Career = () => {
                     <career.icon size={26} />
                   </div>
                   <div>
+                    {/* H3 Sangat bagus untuk SEO List item */}
                     <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors">{career.title}</h3>
                     <div className="flex items-center gap-4 mt-2 text-xs font-medium text-muted-foreground">
                       <span className="flex items-center gap-1.5"><Clock size={14} className="text-primary" /> {career.type}</span>
@@ -380,7 +435,7 @@ const Career = () => {
 
                 <p className="text-sm text-muted-foreground mb-6 leading-relaxed">{career.description}</p>
 
-                <ul className="space-y-3 mb-8">
+                <ul className="space-y-3 mb-8" aria-label={`Tanggung Jawab ${career.title}`}>
                   {career.responsibilities.map((r) => (
                     <li key={r} className="text-sm text-foreground/80 flex items-start gap-3">
                       <div className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" /> {r}
@@ -400,7 +455,7 @@ const Career = () => {
         </div>
       </section>
 
-      {/* MODAL FORM LAMARAN (TAMPILAN BARU YANG LEBIH MEWAH) */}
+      {/* MODAL FORM LAMARAN */}
       <AnimatePresence>
         {isOpen && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 px-4 py-6 backdrop-blur-sm overflow-y-auto">
@@ -413,11 +468,12 @@ const Career = () => {
               {/* Header Modal */}
               <div className="px-8 py-6 border-b border-border flex justify-between items-center bg-card rounded-t-[2rem]">
                 <div>
-                  <h3 className="text-2xl font-bold text-foreground tracking-tight">Kirim Lamaran</h3>
+                  <h3 className="text-2xl font-bold text-foreground tracking-tight">Kirim Lamaran Kerja</h3>
                   <p className="text-sm text-primary font-medium mt-1">{selectedJob?.title || "Posisi Pekerjaan"}</p>
                 </div>
                 <button
                   onClick={closeModal}
+                  aria-label="Tutup form"
                   className="p-2.5 bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground rounded-full transition-colors"
                 >
                   <X size={20} />
@@ -433,50 +489,50 @@ const Career = () => {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div className="space-y-2">
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Nama Lengkap *</label>
+                      <label htmlFor="nama" className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Nama Lengkap *</label>
                       <input 
-                        name="nama" required placeholder="Contoh: Budi Santoso" 
+                        id="nama" name="nama" required placeholder="Contoh: Budi Santoso" 
                         className="w-full px-4 py-3.5 rounded-xl border border-border bg-muted/30 focus:bg-background focus:ring-2 focus:ring-primary/30 outline-none transition-all text-sm font-medium text-foreground" 
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Email *</label>
+                      <label htmlFor="email" className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Email *</label>
                       <input 
-                        name="email" type="email" required placeholder="budi@email.com" 
+                        id="email" name="email" type="email" required placeholder="budi@email.com" 
                         className="w-full px-4 py-3.5 rounded-xl border border-border bg-muted/30 focus:bg-background focus:ring-2 focus:ring-primary/30 outline-none transition-all text-sm font-medium text-foreground" 
                       />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex justify-between">
+                    <label htmlFor="whatsapp" className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex justify-between">
                       <span>Nomor WhatsApp *</span>
                       <span className="text-[10px] text-primary lowercase normal-case">Menerima Notifikasi</span>
                     </label>
                     <input 
-                      name="whatsapp" type="tel" required placeholder="Contoh: 08123456789" 
+                      id="whatsapp" name="whatsapp" type="tel" required placeholder="Contoh: 08123456789" 
                       className="w-full px-4 py-3.5 rounded-xl border border-border bg-muted/30 focus:bg-background focus:ring-2 focus:ring-primary/30 outline-none transition-all text-sm font-medium text-foreground" 
                     />
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div className="space-y-2">
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Profil LinkedIn</label>
+                      <label htmlFor="linkedin" className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Profil LinkedIn</label>
                       <input 
-                        name="linkedin" type="url" placeholder="https://linkedin.com/in/..." 
+                        id="linkedin" name="linkedin" type="url" placeholder="https://linkedin.com/in/..." 
                         className="w-full px-4 py-3.5 rounded-xl border border-border bg-muted/30 focus:bg-background focus:ring-2 focus:ring-primary/30 outline-none transition-all text-sm font-medium text-foreground" 
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Link Portofolio</label>
+                      <label htmlFor="portfolio" className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Link Portofolio</label>
                       <input 
-                        name="portfolio" type="url" placeholder="https://..." 
+                        id="portfolio" name="portfolio" type="url" placeholder="https://..." 
                         className="w-full px-4 py-3.5 rounded-xl border border-border bg-muted/30 focus:bg-background focus:ring-2 focus:ring-primary/30 outline-none transition-all text-sm font-medium text-foreground" 
                       />
                     </div>
                   </div>
 
-                  {/* Area Upload Dokumen Premium */}
+                  {/* Area Upload Dokumen */}
                   <div className="space-y-2">
                     <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Upload CV (PDF/DOCX) *</label>
                     <div className="relative group">
@@ -491,14 +547,15 @@ const Career = () => {
                         name="cv_file" type="file" accept=".pdf,.doc,.docx" required
                         onChange={(e) => setFileName(e.target.files?.[0]?.name || null)}
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                        aria-label="Upload Curriculum Vitae"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Cover Letter / Pesan Singkat</label>
+                    <label htmlFor="pesan" className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Cover Letter / Pesan Singkat</label>
                     <textarea 
-                      name="pesan" rows={3} placeholder="Ceritakan singkat mengapa Anda cocok untuk posisi ini..." 
+                      id="pesan" name="pesan" rows={3} placeholder="Ceritakan singkat mengapa Anda cocok untuk posisi ini..." 
                       className="w-full px-4 py-3.5 rounded-xl border border-border bg-muted/30 focus:bg-background focus:ring-2 focus:ring-primary/30 outline-none transition-all text-sm font-medium text-foreground resize-none"
                     ></textarea>
                   </div>
