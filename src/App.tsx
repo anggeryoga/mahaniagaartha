@@ -10,6 +10,7 @@ import Career from "./pages/Career.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import AdminDashboard from "./pages/AdminDashboard.tsx";
 import CekStatus from "./pages/CekStatus.tsx";
+import Products from "./pages/Products.tsx";
 
 const queryClient = new QueryClient();
 
@@ -30,7 +31,10 @@ const App = () => (
             
             {/* 🔥 ROUTE UNTUK DASHBOARD ADMIN HRD */}
             <Route path="/admin-hrd" element={<AdminDashboard />} />
+
             
+            <Route path="/produk" element={<Products />} />
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
