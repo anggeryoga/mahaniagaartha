@@ -174,8 +174,21 @@ const Career = () => {
       const posisiLamar = formData.get("posisi") as string;
       const emailUser = formData.get("email") as string;
 
-      const waMessageApplicant = `Halo *${namaUser}*! 👋\n\nTerima kasih telah mengirimkan lamaran untuk posisi *${posisiLamar}* di *Maha Niaga Artha*.\n\nData dan CV Anda telah berhasil kami terima ke dalam sistem. Tim HRD kami akan segera melakukan review terhadap kualifikasi Anda.\n\nAnda dapat mengecek status lamaran secara berkala melalui menu "Karir" di website kami dengan menggunakan Email dan Nomor WhatsApp ini.\n\nSemoga sukses!\n\nSalam Hangat,\n*Tim HRD Maha Niaga Artha*`;
+        const waMessageApplicant = `Halo ${namaUser},
 
+        Terima kasih telah mengirimkan lamaran untuk posisi ${posisiLamar} di Maha Niaga Artha.
+
+        Data dan CV Anda telah berhasil kami terima ke dalam sistem. Tim HRD kami akan segera melakukan review terhadap kualifikasi Anda.
+
+        Anda dapat mengecek status lamaran secara berkala melalui halaman berikut:
+        mahaniagaartha.com/career
+
+        Silakan gunakan Email dan Nomor WhatsApp yang Anda daftarkan untuk melakukan pengecekan.
+
+        Semoga sukses.
+
+        Salam,
+        Tim HRD Maha Niaga Artha`;
       try {
         const applicantData = new FormData();
         applicantData.append("target", noWa);
@@ -191,9 +204,17 @@ const Career = () => {
         console.error("Gagal WA Pelamar:", err);
       }
 
-      const hrPhone = "085155145788";
-      const hrMessage = `🚨 *LAMARAN BARU MASUK* 🚨\n\nHalo Tim HRD,\nAda lamaran baru masuk melalui website dengan rincian:\n\n👤 *Nama*: ${namaUser}\n💼 *Posisi*: ${posisiLamar}\n📞 *WhatsApp*: ${noWa}\n✉️ *Email*: ${emailUser}\n\nSilakan login ke *Admin Dashboard* untuk melihat CV dan melakukan review pelamar.\n\nSemangat kerjanya! 💪`;
+      const hrPhone = "082220165100";
+      const hrMessage = `Selamat pagi Pak Jamal,
 
+      Ada lamaran baru masuk melalui website dengan rincian:
+
+      Nama: ${namaUser}
+      Posisi: ${posisiLamar}
+      WhatsApp: ${noWa}
+      Email: ${emailUser}
+
+      Silakan login ke Admin Dashboard untuk melihat CV dan melakukan review pelamar.`;
       try {
         const hrData = new FormData();
         hrData.append("target", hrPhone);
@@ -209,7 +230,7 @@ const Career = () => {
         console.error("Gagal WA HRD:", err);
       }
 
-      alert("Lamaran berhasil dikirim 🚀 Silakan cek WhatsApp Anda.");
+      alert("Lamaran berhasil dikirim Silakan cek WhatsApp Anda.");
       e.target.reset();
       closeModal();
     } catch (error: any) {
