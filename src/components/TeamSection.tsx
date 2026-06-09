@@ -61,7 +61,7 @@ const TeamSection = () => {
               Konsultasi Gratis
             </span>
             <a
-              href="https://wa.me/6281234086100"
+              href="https://wa.me/681212125422"
               target="_blank"
               className="inline-flex items-center px-5 py-2 rounded-full bg-primary text-primary-foreground text-sm font-medium"
             >
