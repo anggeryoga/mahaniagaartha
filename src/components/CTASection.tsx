@@ -36,7 +36,7 @@ href="https://wa.me/6281212126722?text=Halo%20Maha%20Niaga%20Artha,%20saya%20men
 
             {/* Secondary CTA */}
             <a
-              href="tel:+6285155145788"
+              href="tel:+6281212125422"
               className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-primary-foreground/20 text-primary-foreground font-medium text-sm hover:bg-primary-foreground/10 transition-colors"
             >
               <Phone size={16} />
