@@ -1,3 +1,8 @@
-id="p3jv0e"
+name = "mahaniagaartha"
+compatibility_date = "2026-09-30"
+
+[pages]
+pages_build_output_dir = "dist"
+
 [build]
 command = "npm install && npm run build"
