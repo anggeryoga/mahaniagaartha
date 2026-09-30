@@ -480,7 +480,7 @@ const Career = () => {
               </p>
 
               <p className="text-sm text-slate-400 mt-2">
-                Deadline: 30 September 2026
+                Deadline: 30 Oktober 2026
               </p>
             </div>
           </div>
