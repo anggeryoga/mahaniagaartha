@@ -5,7 +5,10 @@ import { HelmetProvider } from "react-helmet-async"; // 🔥 TAMBAHAN UNTUK SEO
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { useScrollToSectionOnMount } from "@/hooks/useSectionNav";
+import {
+  useScrollToSectionOnMount,
+  tampilkanYangTerlihat,
+} from "@/hooks/useSectionNav";
 
 import Index from "./pages/Index.tsx";
 import Career from "./pages/Career.tsx";
@@ -48,12 +51,45 @@ const RevealOnScroll = () => {
           }
         });
       },
-      { rootMargin: "0px 0px -8% 0px", threshold: 0.05 }
+      {
+        // Ambang longgar: elemen yang baru menyentuh tepi bawah layar
+        // langsung ditampilkan, supaya tidak ada kartu tertinggal transparan.
+        rootMargin: "0px 0px 12% 0px",
+        threshold: 0,
+      }
     );
 
     els.forEach((el) => io.observe(el));
 
-    return () => io.disconnect();
+    // Apa pun yang sudah terlihat saat halaman dibuka, tampilkan langsung.
+    // Menutup kasus "buka #services langsung" dan "sudah berhenti di posisi itu".
+    tampilkanYangTerlihat();
+    window.setTimeout(() => tampilkanYangTerlihat(), 600);
+
+    // Halaman baru yang dipasang lewat navigasi klien tidak pernah disentuh
+    // observer yang sama, jadi elemennya bisa tertinggal transparan. Periksa
+    // ulang setiap kali DOM berubah, lalu tampilkan yang ada di area layar.
+    const mo = new MutationObserver(() => {
+      io.disconnect();
+      document.querySelectorAll<HTMLElement>(".reveal").forEach((el) => {
+        if (el.classList.contains("is-in")) return;
+        io.observe(el);
+      });
+      tampilkanYangTerlihat();
+    });
+    mo.observe(document.body, { childList: true, subtree: true });
+
+    // Jaring pengaman terakhir: apa pun yang berada dekat area layar tetap
+    // ditampilkan. Konten tidak boleh tersembunyi hanya karena animasi gagal.
+    const jaring = window.setTimeout(() => {
+      tampilkanYangTerlihat(1.2);
+    }, 1600);
+
+    return () => {
+      io.disconnect();
+      mo.disconnect();
+      window.clearTimeout(jaring);
+    };
   }, []);
 
   return null;

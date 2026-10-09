@@ -2,12 +2,28 @@ import { useEffect, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 /**
- * Navigasi ke section di halaman Beranda dari halaman mana pun.
+ * Tampilkan elemen .reveal yang sudah menyentuh area layar.
  *
- * Masalah sebelumnya: <a href="/#about"> tidak menggulir di react-router.
- * Hook ini menangani: sudah di Beranda → gulir halus; di halaman lain →
- * pindah ke "/" dulu, lalu gulir setelah halaman siap.
+ * Dipakai sebagai jaring pengaman: kalau pengunjung berhenti tepat di posisi
+ * di mana sebuah kartu cuma "mengintip" dari bawah lipatan, observer bisa
+ * tidak pernah menganggapnya masuk layar. Akibatnya kartu tetap transparan
+ * dan section tampak kosong. Fungsi ini menutup celah itu.
  */
+export const tampilkanYangTerlihat = (ambang = 0.95) => {
+  const tinggi = window.innerHeight;
+  document.querySelectorAll<HTMLElement>(".reveal:not(.is-in)").forEach((el) => {
+    const r = el.getBoundingClientRect();
+    if (r.top < tinggi * ambang && r.bottom > 0) {
+      el.classList.add("is-in");
+    }
+  });
+};
+
+/** Jalankan pemeriksaan beberapa kali setelah gulir selesai */
+export const pastikanTampil = (jeda: number[] = [400, 900]) => {
+  jeda.forEach((ms) => window.setTimeout(() => tampilkanYangTerlihat(), ms));
+};
+
 export const useSectionNav = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -26,8 +42,8 @@ export const useSectionNav = () => {
         const el = document.querySelector(selector);
         if (el) {
           el.scrollIntoView({ behavior: "smooth", block: "start" });
-          // Perbarui hash tanpa memicu lompatan kedua
           window.history.replaceState(null, "", selector);
+          pastikanTampil();
         }
         return;
       }
@@ -55,13 +71,13 @@ export const useScrollToSectionOnMount = () => {
 
     if (!id) return;
 
-    // Tunggu halaman baru selesai render
     const raf = requestAnimationFrame(() => {
       const el = document.getElementById(id);
       if (el) {
         el.scrollIntoView({ behavior: "smooth", block: "start" });
         window.history.replaceState(null, "", `#${id}`);
       }
+      pastikanTampil([500, 1100]);
     });
 
     return () => cancelAnimationFrame(raf);
