@@ -15,81 +15,43 @@ const row2 = partners.slice(Math.ceil(partners.length / 2));
 
 const PartnersSection = () => {
   return (
-    <section className="py-14 border-t border-border bg-background overflow-hidden">
-      <div className="container mx-auto px-4 lg:px-8">
-        
-        <p className="text-center text-xs uppercase tracking-[0.2em] text-muted-foreground mb-10">
-          Brand Usaha Kami
-        </p>
-
-        {/* ROW 1 */}
-        <div className="overflow-hidden mb-6">
-          <div className="flex gap-5 w-max marquee">
-            {[...row1, ...row1].map((partner, i) => (
-              <div
-                key={i}
-                className="h-24 w-40 flex-shrink-0 overflow-hidden rounded-xl border border-border bg-muted/40"
-              >
-                <img
-                  src={partner.logo}
-                  alt={partner.name}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                />
-              </div>
-            ))}
+    <section
+      id="partners"
+      className="section section--paper section--edge !pb-0 overflow-hidden"
+    >
+      <div className="wrap">
+        <div className="sec-head sec-head--split reveal">
+          <div>
+            <span className="eyebrow">Brand Usaha Kami</span>
+            <h2 className="sec-title">Sembilan Brand, Satu Sistem</h2>
           </div>
+          <p className="sec-sub">
+            Semua brand di bawah ini sudah beroperasi dan bisa Anda pilih
+            sesuai target pasar dan lokasi usaha.
+          </p>
         </div>
-
-        {/* ROW 2 */}
-        <div className="overflow-hidden">
-          <div className="flex gap-5 w-max marquee-reverse">
-            {[...row2, ...row2].map((partner, i) => (
-              <div
-                key={i}
-                className="h-24 w-40 flex-shrink-0 overflow-hidden rounded-xl border border-border bg-muted/40"
-              >
-                <img
-                  src={partner.logo}
-                  alt={partner.name}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-
       </div>
 
-      {/* INLINE CSS */}
-      <style jsx>{`
-        .marquee {
-          animation: marquee 25s linear infinite;
-        }
+      {/* Dua baris marquee berlawanan arah */}
+      <div className="overflow-hidden mb-4 sm:mb-5">
+        <div className="flex gap-4 sm:gap-6 w-max marquee items-center">
+          {[...row1, ...row1].map((p, i) => (
+            <div key={`a${i}`} className="logo-box logo-box--marquee">
+              <img src={p.logo} alt={p.name} loading="lazy" />
+            </div>
+          ))}
+        </div>
+      </div>
 
-        .marquee-reverse {
-          animation: marqueeReverse 25s linear infinite;
-        }
-
-        @keyframes marquee {
-          0% {
-            transform: translateX(0%);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
-
-        @keyframes marqueeReverse {
-          0% {
-            transform: translateX(-50%);
-          }
-          100% {
-            transform: translateX(0%);
-          }
-        }
-      `}</style>
+      <div className="overflow-hidden pb-12 sm:pb-14">
+        <div className="flex gap-4 sm:gap-6 w-max marquee-reverse items-center">
+          {[...row2, ...row2].map((p, i) => (
+            <div key={`b${i}`} className="logo-box logo-box--marquee">
+              <img src={p.logo} alt={p.name} loading="lazy" />
+            </div>
+          ))}
+        </div>
+      </div>
     </section>
   );
 };

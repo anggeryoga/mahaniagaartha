@@ -1,57 +1,106 @@
-import { motion } from "framer-motion";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, ShieldCheck } from "lucide-react";
+import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-meeting.jpg";
 
-const HeroSection = () => {
-  return (
-    <section className="relative pt-24 pb-8 lg:pt-28 lg:pb-12 overflow-hidden">
-      <div className="container mx-auto px-4 lg:px-8">
-        <div className="relative rounded-3xl overflow-hidden min-h-[500px] lg:min-h-[600px]">
-          <img
-            src={heroImage}
-            alt="Peluang usaha makanan dan minuman siap jual"
-            className="absolute inset-0 w-full h-full object-cover"
-            width={1280}
-            height={720}
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-foreground/60 via-foreground/30 to-transparent" />
+const stats = [
+  { num: "4500+", label: "Mitra usaha aktif" },
+  { num: "9", label: "Brand siap pakai" },
+  { num: "100%", label: "Pendampingan usaha" },
+];
 
-          <div className="relative z-10 flex flex-col justify-end h-full min-h-[500px] lg:min-h-[600px] p-8 lg:p-14">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7 }}
-              className="max-w-xl"
-            >
-              {/* Badge */}
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-background/90 backdrop-blur-sm text-xs font-medium text-foreground mb-6">
-                <Sparkles size={12} className="text-accent" />
-                <span>PELUANG USAHA</span>
-              </div>
+const HeroSection = () => {  return (
+    <section className="relative bg-white pt-24 pb-14 lg:pt-28 lg:pb-20 overflow-hidden">
+      {/* Aksen geometris: satu blok diagonal tipis di sudut kanan atas */}
+      <div
+        className="pointer-events-none absolute top-0 right-0 h-full w-[min(38vw,460px)] bg-purple-50 hidden lg:block"
+        style={{ clipPath: "polygon(38% 0, 100% 0, 100% 100%, 0 100%)" }}
+        aria-hidden="true"
+      />
 
-              {/* Headline */}
-              <h1 className="font-heading text-4xl lg:text-6xl text-primary-foreground leading-tight mb-4">
-                Mulai Usaha Tanpa Ribet,{" "}
-                <span className="inline-block bg-accent/90 text-accent-foreground px-3 py-1 rounded-lg">
-                  Langsung Siap Jual
-                </span>
-              </h1>
+      <div className="wrap relative">
+        <div className="grid gap-10 lg:gap-12 lg:grid-cols-[1.06fr_.94fr] items-center">
+          {/* ── SALINAN ── */}
+          <div className="max-w-[720px]">
+            <span className="eyebrow eyebrow--plain">Peluang Usaha</span>
 
-              {/* Subheadline */}
-              <p className="text-primary-foreground/80 text-base lg:text-lg mb-8 max-w-md">
-                Paket usaha makanan & minuman lengkap dengan brand, bahan, dan sistem. 
-                Tinggal jalan, langsung berpotensi cuan.
-              </p>
+            <h1 className="text-indigo mb-3 max-w-[15ch]">
+              Mulai Usaha Tanpa Ribet,{" "}
+              <span className="text-purple">Langsung Siap Jual</span>
+            </h1>
 
-              {/* CTA */}
-              <a
-                href="#contact"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:opacity-90 transition-opacity"
-              >
+            <p className="lead max-w-[54ch] mb-7">
+              Paket usaha makanan &amp; minuman lengkap dengan brand, bahan, dan
+              sistem. Tinggal jalan, langsung berpotensi cuan.
+            </p>
+
+            <div className="flex flex-wrap gap-2.5 mb-8">
+              <a href="#contact" className="btn btn--primary btn--lg">
                 Konsultasi Gratis
                 <ArrowRight size={16} />
               </a>
-            </motion.div>
+              <Link to="/produk" className="btn btn--outline btn--lg">
+                Lihat Paket Usaha
+              </Link>
+            </div>
+
+            {/* Statistik ringkas — kartu berisi, pemisah antar kolom */}
+            <div className="grid grid-cols-3 bg-[var(--bg)] border border-[var(--border)] rounded-[var(--r-lg)] px-6 py-4 max-w-[560px]">
+              {stats.map((s, i) => (
+                <div
+                  key={s.label}
+                  className={
+                    i > 0
+                      ? "border-l border-[var(--border)] pl-6"
+                      : "pr-4"
+                  }
+                >
+                  <span className="block text-[length:var(--fs-num)] font-bold leading-[1.05] tracking-[-0.02em] text-indigo">
+                    {s.num}
+                  </span>
+                  <span className="block mt-1 text-[length:var(--fs-sm)] leading-snug text-[color:var(--text-2)]">
+                    {s.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── MEDIA ── */}
+          <div className="relative">
+            {/* Aksen: pil kuning vertikal di kanan */}
+            <div
+              className="hidden sm:block absolute z-0 right-[-14px] top-7 bottom-7 w-[14px] bg-amber rounded-full"
+              aria-hidden="true"
+            />
+            {/* Aksen: siku biru di kiri atas */}
+            <div
+              className="hidden sm:block absolute z-0 left-[-16px] top-[-16px] w-[76px] h-[76px] border-t-4 border-l-4 border-purple rounded-tl-[var(--r-xl)]"
+              aria-hidden="true"
+            />
+
+            <img
+              src={heroImage}
+              alt="Peluang usaha makanan dan minuman siap jual"
+              className="photo relative z-10 aspect-[4/3.5] object-[center_30%]"
+              width={1280}
+              height={1120}
+              loading="eager"
+            />
+
+            {/* Kartu info — datar, bukan glassmorphism */}
+            <div className="absolute z-20 left-4 bottom-4 sm:left-[18px] sm:bottom-[18px] flex items-center gap-3.5 bg-white border border-[var(--border)] rounded-[var(--r-lg)] px-4 py-3.5 shadow-[var(--sh-md)] max-w-[230px] sm:max-w-[320px]">
+              <span className="shrink-0 w-[42px] h-[42px] rounded-full grid place-items-center bg-amber text-indigo">
+                <ShieldCheck size={18} />
+              </span>
+              <span>
+                <span className="block text-[length:var(--fs-sm)] font-semibold leading-tight text-indigo">
+                  Konsep Teruji
+                </span>
+                <span className="block text-[length:var(--fs-xs)] leading-snug text-[color:var(--text-2)]">
+                  Dipakai ribuan mitra di seluruh Indonesia.
+                </span>
+              </span>
+            </div>
           </div>
         </div>
       </div>

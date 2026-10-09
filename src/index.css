@@ -1,123 +1,803 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    /* ===== COLOR SYSTEM ===== */
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-
-    --primary: 160 40% 22%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 210 20% 96%;
-    --secondary-foreground: 222 47% 11%;
-
-    --muted: 210 16% 93%;
-    --muted-foreground: 215 16% 47%;
-
-    --accent: 72 85% 50%;
-    --accent-foreground: 160 40% 12%;
-
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 214 20% 88%;
-    --input: 214 20% 88%;
-    --ring: 160 40% 22%;
-
-    --radius: 0.65rem;
-
-    /* ===== TYPOGRAPHY ===== */
-    --font-body: 'DM Sans', sans-serif;
-    --font-heading: 'Outfit', sans-serif;
-  }
+/* ==========================================================================
+   FONT — DM Sans, self-hosted (tanpa CDN)
+   File: public/fonts/dmsans-*.woff2
+   ========================================================================== */
+@font-face {
+  font-family: 'DM Sans';
+  src: url('/fonts/dmsans-latin.woff2') format('woff2-variations');
+  font-weight: 100 1000;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'DM Sans';
+  src: url('/fonts/dmsans-latin-ext.woff2') format('woff2-variations');
+  font-weight: 100 1000;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
 @layer base {
-  * {
-    @apply border-border;
+  :root {
+    /* ===== WARNA =====
+       Palet klien — SOLID, tanpa gradient.
+       Komposisi: putih/off-white 65% · deep indigo 25%
+                  royal purple 8% · amber 2% */
+    --indigo: #252653; /* Deep Indigo — dasar gelap, judul */
+    --indigo-700: #1b1c3e; /* hover / lebih gelap */
+    --indigo-500: #3a3b6e; /* varian terang */
+    --indigo-100: #e3e4ef; /* tint muda */
+    --indigo-50: #f4f4f9; /* tint sangat muda */
+
+    --purple: #6554c0; /* Royal Purple — aksen utama, 8% */
+    --purple-700: #5344a8; /* hover */
+    --purple-100: #e6e3f5; /* tint muda */
+    --purple-50: #f2f0fa; /* tint sangat muda */
+
+    --amber: #e9a23b; /* Amber — aksen hemat, 2% */
+    --amber-600: #d18c26; /* hover */
+    --amber-100: #fdf3e0; /* tint muda */
+    --amber-text: #7a5410; /* amber untuk TEKS di latar terang — kontras AA */
+
+    --bg: #f7f8fc; /* Off-white — 65% */
+    --surface: #ffffff;
+    --text: #23243a;
+    --text-2: #55566e;
+    --border: #e4e5ee;
+    --border-2: #d0d2e0;
+
+    /* ===== TIPOGRAFI ===== */
+    --font: 'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica,
+      Arial, sans-serif;
+
+    --fs-body: 16.5px;
+    --fs-lead: clamp(16px, 1.2vw, 18px);
+    --fs-sm: 14.5px;
+    --fs-xs: 12.5px;
+    --nav-h: 64px;
+    --fs-h1: clamp(32px, 4.2vw, 56px);
+    --fs-h2: clamp(26px, 3vw, 40px);
+    --fs-h3: clamp(20px, 1.8vw, 26px);
+    --fs-h4: clamp(17px, 1.35vw, 20px);
+    --fs-num: clamp(25px, 2.3vw, 33px);
+    --fs-display: clamp(30px, 4.6vw, 62px);
+    --fs-index: clamp(12px, 0.9vw, 14px);
+
+    --lh-body: 1.5;
+    --lh-tight: 1.12;
+    --lh-snug: 1.25;
+    --lh-quiet: 1.65;
+
+    --fw-normal: 400;
+    --fw-medium: 500;
+    --fw-semi: 600; /* bobot heading standar */
+    --fw-bold: 700; /* hanya hero & penekanan */
+
+    /* ===== SPASI (sistem 8px) ===== */
+    --sp-1: 8px;
+    --sp-2: 16px;
+    --sp-3: 24px;
+    --sp-4: 32px;
+    --sp-5: 40px;
+    --sp-6: 48px;
+    --sp-8: 64px;
+
+    /* ===== LAYOUT ===== */
+    --sec-y: clamp(40px, 4vw, 68px); /* jarak vertikal section — ringkas */
+    --gap: clamp(18px, 1.6vw, 24px);
+    --wrap: 1320px;
+    --wrap-narrow: 900px;
+    --pad-x: clamp(20px, 2.6vw, 36px);
+
+    /* ===== RADIUS ===== */
+    --r-sm: 10px;
+    --r-md: 12px;
+    --r-lg: 16px;
+    --r-xl: 22px;
+    --r-pill: 999px;
+
+    /* ===== BAYANGAN (berlapis & halus) ===== */
+    --sh-xs: 0 1px 2px rgba(23, 43, 99, 0.05);
+    --sh-sm: 0 2px 6px rgba(23, 43, 99, 0.04), 0 6px 16px rgba(23, 43, 99, 0.04);
+    --sh-md: 0 4px 12px rgba(23, 43, 99, 0.05), 0 12px 32px rgba(23, 43, 99, 0.06);
+    --sh-lg: 0 8px 24px rgba(23, 43, 99, 0.07), 0 24px 60px rgba(23, 43, 99, 0.08);
+
+    /* ===== GERAK ===== */
+    --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --dur: 0.24s;
+    --dur-slow: 0.45s;
+
+    /* ===== SKALA WARNA (hanya warna solid — TIDAK ada gradient) =====
+       Menjaga komponen shadcn/ui & halaman bawaan (admin-hrd, dll) tetap
+       konsisten dengan palet klien. */
+    --background: 228 33% 98%; /* #F7F8FC off-white */
+    --foreground: 232 25% 18%; /* #23243a */
+
+    --card: 0 0% 100%;
+    --card-foreground: 232 25% 18%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 232 25% 18%;
+
+    --primary: 239 39% 24%; /* Deep Indigo #252653 */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 249 40% 96%;
+    --secondary-foreground: 246 39% 43%;
+
+    --muted: 228 25% 96%;
+    --muted-foreground: 233 12% 38%;
+
+    --accent: 249 40% 96%;
+    --accent-foreground: 246 39% 43%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 232 22% 91%;
+    --input: 232 22% 91%;
+    --ring: 246 39% 54%; /* Royal Purple #6554C0 */
+
+    --radius: 0.85rem;
+  }
+}
+
+/* ==========================================================================
+   DASAR
+   ========================================================================== */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    /* Kompensasi navbar tetap saat lompat ke section */
+    scroll-padding-top: var(--nav-h);
+  }
+
+  /* Setiap section ber-anchor punya jarak aman dari navbar */
+  [id] {
+    scroll-margin-top: calc(var(--nav-h) + 8px);
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
-    font-family: var(--font-body);
+    font-family: var(--font);
+    font-size: var(--fs-body);
+    font-weight: var(--fw-normal);
+    line-height: var(--lh-body);
+    color: var(--text);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
   }
 
-  /* ===== HEADING (MODERN SANS) ===== */
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-heading);
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  button,
+  input,
+  select,
+  textarea {
+    font-family: inherit;
+    font-weight: var(--fw-semi);
+    line-height: var(--lh-snug);
   }
 
   h1 {
-    @apply text-3xl md:text-4xl font-semibold tracking-tight;
+    font-size: var(--fs-h1);
+    line-height: 1.09;
+    letter-spacing: -0.032em;
+    font-weight: var(--fw-bold);
   }
 
   h2 {
-    @apply text-2xl md:text-3xl font-semibold tracking-tight;
+    font-size: var(--fs-h2);
+    line-height: 1.14;
+    letter-spacing: -0.026em;
   }
 
   h3 {
-    @apply text-xl font-semibold;
+    font-size: var(--fs-h3);
+    letter-spacing: -0.02em;
   }
 
   h4 {
-    @apply text-lg font-medium;
-  }
-
-  h5 {
-    @apply text-base font-medium;
-  }
-
-  h6 {
-    @apply text-sm font-medium;
+    font-size: var(--fs-h4);
+    letter-spacing: -0.014em;
   }
 
   p {
-    @apply text-base leading-relaxed text-muted-foreground;
+    margin: 0;
+  }
+
+  ::selection {
+    background: var(--purple);
+    color: #fff;
+  }
+
+  /* Fokus terlihat untuk aksesibilitas */
+  :focus-visible {
+    outline: 2px solid var(--purple);
+    outline-offset: 2px;
+    border-radius: 4px;
   }
 }
 
+/* ==========================================================================
+   KOMPONEN
+   ========================================================================== */
 @layer components {
-  .card-modern {
-    @apply bg-card border border-border rounded-xl p-5 shadow-sm;
+  /* ---- Layout ---- */
+  .wrap {
+    width: 100%;
+    max-width: var(--wrap);
+    margin-inline: auto;
+    padding-inline: var(--pad-x);
   }
 
-  .card-title {
-    @apply text-base font-semibold text-foreground;
-    font-family: var(--font-heading);
+  .wrap-narrow {
+    max-width: var(--wrap-narrow);
+    margin-inline: auto;
+    padding-inline: var(--pad-x);
   }
 
-  .card-desc {
-    @apply text-sm text-muted-foreground;
+  .section {
+    padding-block: var(--sec-y);
+    position: relative;
   }
 
-  .btn-primary {
-    @apply bg-primary text-primary-foreground px-4 py-2 rounded-lg font-medium hover:opacity-90 transition;
+  /* Hanya tiga permukaan — jangan setiap section beda warna */
+  .section--white {
+    background: #fff;
   }
 
-  .btn-secondary {
-    @apply bg-secondary text-secondary-foreground px-4 py-2 rounded-lg font-medium hover:bg-muted transition;
+  .section--paper {
+    background: var(--bg); /* #F7F8FC off-white — 65% */
+  }
+
+  /* Permukaan gelap — Deep Indigo (25% dari komposisi) */
+  .section--blue {
+    background: var(--indigo);
+    color: #fff;
+  }
+
+  .section--blue h2,
+  .section--blue h3 {
+    color: #fff;
+  }
+
+  .section--edge {
+    border-top: 1px solid var(--border);
+  }
+
+  /* ---- Eyebrow: label kecil kapital berspasi lebar + garis pendek ---- */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-semi);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--purple);
+    margin-bottom: var(--sp-2);
+  }
+
+  .eyebrow::before {
+    content: '';
+    width: 28px;
+    height: 2px;
+    background: currentColor;
+    flex-shrink: 0;
+  }
+
+  .eyebrow--plain::before {
+    display: none;
+  }
+
+  .eyebrow--light {
+    color: #c7d5fb;
+  }
+
+  /* ---- Judul section (editorial) ---- */
+  .sec-head {
+    margin-bottom: clamp(16px, 1.8vw, 26px);
+  }
+
+  .sec-title {
+    color: var(--purple);
+    font-weight: var(--fw-semi);
+    letter-spacing: -0.022em;
+  }
+
+  .sec-sub {
+    color: var(--text-2);
+    font-size: var(--fs-lead);
+    max-width: 60ch;
+    line-height: var(--lh-quiet);
+    margin-top: 10px;
+  }
+
+  /* Varian editorial: nomor urut + garis pemisah penuh */
+  .sec-head--rule {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0 clamp(16px, 2vw, 32px);
+    align-items: baseline;
+    padding-top: 14px;
+    border-top: 2px solid var(--purple);
+    margin-bottom: clamp(18px, 2vw, 30px);
+  }
+
+  .sec-index {
+    font-size: var(--fs-index);
+    font-weight: var(--fw-bold);
+    letter-spacing: 0.1em;
+    color: var(--text-2);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Varian majalah: judul kiri, keterangan kanan */
+  .sec-head--split {
+    display: grid;
+    gap: 10px clamp(16px, 2.2vw, 32px);
+    align-items: end;
+  }
+
+  /* Di mobile: judul dulu, keterangan di bawahnya (jangan dibalik) */
+  .sec-head--split > * {
+    min-width: 0;
+  }
+
+  .sec-head--split .sec-sub {
+    margin-top: 0;
+  }
+
+  @media (min-width: 900px) {
+    .sec-head--split {
+      grid-template-columns: 1.1fr 0.9fr;
+    }
+
+    .sec-head--split .sec-sub {
+      margin-top: 0;
+    }
+  }
+
+  /* ---- Kartu ---- */
+  .card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: clamp(24px, 2.4vw, 32px);
+    transition: transform var(--dur) var(--ease),
+      border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .card--hover:hover {
+    border-color: var(--purple-100);
+    transform: translateY(-4px);
+    box-shadow: var(--sh-md);
+  }
+  .card__icon {
+    width: 46px;
+    height: 46px;
+    border-radius: var(--r-md);
+    display: grid;
+    place-items: center;
+    background: var(--purple-50);
+    color: var(--purple);
+    margin-bottom: var(--sp-3);
+    flex-shrink: 0;
+    transition: background-color var(--dur) var(--ease),
+      color var(--dur) var(--ease);
+  }
+
+  .card--hover:hover .card__icon {
+    background: var(--amber);
+    color: var(--purple);
+  }
+
+  .card__title {
+    font-size: var(--fs-h4);
+    font-weight: var(--fw-semi);
+    color: var(--purple);
+    margin-bottom: var(--sp-2);
+    line-height: 1.3;
+  }
+
+  .card__text {
+    font-size: var(--fs-sm);
+    color: var(--text-2);
+    line-height: var(--lh-quiet);
+  }
+
+  /* ---- Tombol ---- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px 24px;
+    border-radius: var(--r-pill);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-semi);
+    line-height: 1;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: background-color var(--dur) var(--ease),
+      color var(--dur) var(--ease), border-color var(--dur) var(--ease),
+      transform var(--dur) var(--ease);
+    text-align: center;
+  }
+
+  .btn:active {
+    transform: translateY(1px);
+  }
+
+  /* Tombol utama — Royal Purple (aksen 8%, hanya untuk aksi) */
+  .btn--primary {
+    background: var(--purple);
+    color: #fff;
+  }
+
+  .btn--primary:hover {
+    background: var(--purple-700);
+  }
+  /* Tombol aksen — Royal Purple, dipakai hemat (aksen 8%) */
+  .btn--gold {
+    background: var(--purple);
+    color: #fff;
+  }
+
+  .btn--gold:hover {
+    background: var(--purple-700);
+  }
+
+  /* Tombol di atas latar gelap — varian terang agar kontras */
+  .btn--on-dark {
+    background: #fff;
+    color: var(--indigo);
+  }
+
+  .btn--on-dark:hover {
+    background: var(--indigo-50);
+  }
+
+  .btn--outline {
+    background: transparent;
+    color: var(--purple);
+    border-color: var(--border-2);
+  }
+
+  .btn--outline:hover {
+    border-color: var(--purple);
+    background: var(--purple-50);
+  }
+
+  .btn--ghost-light {
+    background: transparent;
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.35);
+  }
+
+  .btn--ghost-light:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: #fff;
+  }
+
+  .btn--lg {
+    padding: 16px 30px;
+    font-size: 15.5px;
+  }
+
+  .btn--block {
+    width: 100%;
+  }
+
+  /* ---- Gambar ----
+     Sudut membulat, TANPA border — bersih dan menyatu dengan latar. */
+  .photo {
+    width: 100%;
+    object-fit: cover;
+    border-radius: var(--r-xl);
+    box-shadow: var(--sh-md);
+  }
+
+  /* Gambar berbingkai sudut bulat — dipakai untuk foto tim, avatar, dll. */
+  .photo--rounded {
+    border-radius: var(--r-2xl);
+  }
+
+  /* Avatar bulat penuh — tanpa border putih */
+  .photo--circle {
+    border-radius: 999px;
+  }
+
+  /* ---- Logo brand ----
+     Ukuran mengikuti rasio asli gambar, TIDAK dipaksa satu ukuran.
+     Yang diseragamkan hanya tinggi supaya deretannya tetap rata.
+     Tanpa padding, tanpa kotak latar — hanya border radius. */
+  .logo-box {
+    background: #fff;
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    flex-shrink: 0;
+  }
+
+  .logo-box img {
+    display: block;
+    height: var(--logo-h, 72px);
+    width: auto;
+    max-width: 100%;
+    border-radius: inherit;
+  }
+
+  /* Ukuran di marquee: tinggi tetap, lebar mengikuti gambar asli */
+  .logo-box--marquee {
+    --logo-h: 72px;
+    width: auto;
+    min-width: 0;
+  }
+
+  /* ---- Peta lokasi: sudut membulat, tanpa border ---- */
+  .map-frame {
+    width: 100%;
+    border-radius: var(--r-xl);
+    overflow: hidden;
+    /* Tinggi adaptif: pendek di HP, lega di desktop */
+    height: clamp(230px, 42vw, 460px);
+  }
+
+  .map-frame__inner {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
   }
 }
 
+/* ==========================================================================
+   UTILITAS
+   ========================================================================== */
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
 
-  /* ===== MODERN ACCENT (NO SERIF) ===== */
-  .text-accent-modern {
-    font-family: var(--font-heading);
-    letter-spacing: -0.01em;
+  .measure {
+    max-width: 68ch;
+  }
+
+  .lead {
+    font-size: var(--fs-lead);
+    color: #3d3d3d;
+    line-height: var(--lh-quiet);
+  }
+}
+
+/* ==========================================================================
+   REVEAL — muncul saat di-scroll (dinonaktifkan bila JS tidak jalan)
+   ========================================================================== */
+.js-reveal .reveal {
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+.js-reveal .reveal.is-in {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+}
+
+/* Hormati preferensi pengguna yang tidak ingin animasi */
+@media (prefers-reduced-motion: reduce) {
+  .js-reveal .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.js-reveal .reveal.d1 {
+  transition-delay: 0.05s;
+}
+.js-reveal .reveal.d2 {
+  transition-delay: 0.1s;
+}
+.js-reveal .reveal.d3 {
+  transition-delay: 0.15s;
+}
+
+/* ==========================================================================
+   MARQUEE — logo brand
+   ========================================================================== */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marqueeReverse {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+.marquee {
+  animation: marquee 32s linear infinite;
+}
+
+.marquee-reverse {
+  animation: marqueeReverse 32s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee,
+  .marquee-reverse {
+    animation: none;
+  }
+
+  .js-reveal .reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Layar sempit: naikkan skala agar nyaman dibaca & disentuh di HP */
+@media (max-width: 760px) {
+  :root {
+    --fs-h1: clamp(25px, 7vw, 31px);
+    --fs-h2: clamp(20px, 5.4vw, 25px);
+    --fs-h3: clamp(17.5px, 4.5vw, 20px);
+    --fs-h4: clamp(16px, 4.1vw, 18px);
+    --fs-body: 15.5px;
+    --fs-lead: 15.5px;
+    --fs-sm: 14px;
+    --fs-xs: 11.5px;
+    --nav-h: 58px;
+    --sec-y: clamp(38px, 9vw, 52px);
+    --gap: 14px;
+  }
+
+  body {
+    /* 16px pada input mencegah iOS auto-zoom; teks badan 15.5px */
+    font-size: 15.5px;
+  }
+
+  /* Input tetap >=16px supaya iOS tidak auto-zoom saat difokus */
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+
+  .eyebrow {
+    font-size: 11.5px;
+    letter-spacing: 0.12em;
+    margin-bottom: 8px;
+  }
+
+  .sec-head {
+    margin-bottom: 16px;
+  }
+
+  .sec-head--rule {
+    gap: 0 12px;
+    padding-top: 10px;
+    border-top-width: 2px;
+  }
+
+  .sec-head--split {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    align-items: start;
+  }
+
+  /* Tombol jadi ramah jempol, tapi tidak gemuk */
+  .btn {
+    padding: 11px 18px;
+    min-height: 44px;
+    font-size: 14.5px;
+  }
+
+  .btn--lg {
+    padding: 12px 20px;
+    min-height: 46px;
+  }
+
+  /* Kartu lebih hemat ruang */
+  .card {
+    padding: 20px 18px;
+  }
+
+  .card__icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 14px;
+  }
+
+  /* Logo brand di HP: tinggi dikecilkan agar proporsional */
+  .logo-box--marquee {
+    --logo-h: 46px;
+    border-radius: var(--r-md);
+  }
+
+  /* Peta cukup setinggi ~1/3 layar HP */
+  .map-frame {
+    height: 240px;
+  }
+
+  /* Tautan teks di dalam paragraf: beri area sentuh nyaman di HP */
+  @media (hover: none) and (pointer: coarse) {
+    .footer-link,
+    p a,
+    li a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 40px;
+    }
+
+    .footer-col a {
+      min-height: 44px;
+    }
+  }
+
+  /* Cegah elemen apa pun melebar keluar layar */
+  img,
+  table,
+  pre,
+  iframe {
+    max-width: 100%;
+  }
+}
+
+/* Layar sangat sempit */
+@media (max-width: 380px) {
+  :root {
+    --pad-x: 16px;
+    --fs-h1: clamp(25px, 7.4vw, 30px);
+  }
+
+  .btn {
+    font-size: 14.5px;
+    padding: 12px 18px;
+  }
+
+  .logo-box--marquee {
+    --logo-h: 40px;
   }
 }

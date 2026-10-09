@@ -5,13 +5,14 @@ import ServicesSection from "@/components/ServicesSection";
 import TeamSection from "@/components/TeamSection";
 import AboutSection from "@/components/AboutSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
-import CTASection from "@/components/CTASection";
 import PartnersSection from "@/components/PartnersSection";
+import CTASection from "@/components/CTASection";
+import CareerSection from "@/components/CareerSection";
 import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[var(--bg)]">
       <Navbar />
       <HeroSection />
       <ValuesSection />
@@ -21,6 +22,7 @@ const Index = () => {
       <TestimonialsSection />
       <PartnersSection />
       <CTASection />
+      <CareerSection />
       <Footer />
     </div>
   );

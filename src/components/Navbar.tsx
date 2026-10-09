@@ -1,136 +1,174 @@
-import { useState } from "react";
-import { Menu, X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
+import { Menu, X, MessageCircle } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import { useSectionNav } from "@/hooks/useSectionNav";
 
+/** href: "#id" = section di Beranda · route: path halaman sendiri */
 const navLinks = [
-  { label: "Home", href: "#", route: "/" },
-  { label: "Tentang", href: "#about", route: null },
-  { label: "Produk", href: "#produk", route: "/produk" },
-  { label: "Team Sales", href: "#team", route: null },
-  { label: "Testimoni", href: "#testimonials", route: null },
-  { label: "Karir", href: "/career", route: "/career" },
-  { label: "Kontak", href: "#contact", route: null },
+  { label: "Beranda", href: "#top" },
+  { label: "Tentang", href: "#about" },
+  { label: "Layanan", href: "#services" },
+  { label: "Tim Sales", href: "#team" },
+  { label: "Testimoni", href: "#testimonials" },
+  { label: "Brand Kami", href: "#partners" },
+  { label: "Kontak", href: "#contact" },
 ];
+
+const pageLinks = [{ label: "Karir", route: "/career" }];
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const location = useLocation();
+  const goToSection = useSectionNav();
 
-  const renderLink = (
-    link: typeof navLinks[0],
-    className: string,
-    onClick?: () => void
-  ) => {
-    if (link.route) {
-      return (
-        <Link
-          key={link.label}
-          to={link.route}
-          className={className}
-          onClick={onClick}
-        >
-          {link.label}
-        </Link>
-      );
-    }
+  // Kunci scroll latar saat drawer terbuka + tutup saat pindah halaman
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
 
-    const href = location.pathname !== "/" ? `/${link.href}` : link.href;
+  useEffect(() => setOpen(false), [location.pathname]);
 
-    return (
-      <a key={link.label} href={href} className={className} onClick={onClick}>
-        {link.label}
-      </a>
-    );
-  };
+  const linkCls =
+    "text-[length:var(--fs-sm)] font-medium text-[color:var(--text)] transition-colors hover:text-purple";
+
+  const isActive = (route: string) => location.pathname === route;
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-      <div className="container mx-auto flex items-center justify-between h-16 px-4 lg:px-8">
+    <nav className="fixed top-0 inset-x-0 z-50 bg-white/92 backdrop-blur-md border-b border-[var(--border)]">
+      <div className="wrap flex items-center justify-between h-16">
         {/* Logo */}
         <Link
           to="/"
-          className="font-heading text-2xl tracking-tight leading-none"
+          className="flex items-center gap-2.5 shrink-0 min-w-0"
+          aria-label="Maha Niaga Artha - Beranda"
         >
-          <span className="font-bold text-foreground">Maha Niaga</span>{" "}
-          <span className="font-extrabold text-primary">Artha</span>
+          <img
+            src="/logo.svg"
+            alt=""
+            className="w-9 h-9 object-contain rounded-[var(--r-sm)] shrink-0"
+            width={36}
+            height={36}
+          />
+          <span className="font-semibold text-[17px] sm:text-lg leading-none tracking-tight text-indigo truncate">
+            Maha Niaga Artha
+          </span>
         </Link>
 
-        {/* Desktop Menu */}
-        <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) =>
-            renderLink(
-              link,
-              "text-sm font-medium text-foreground/70 hover:text-primary transition-colors"
-            )
-          )}
+        {/* Menu desktop */}
+        <div className="hidden lg:flex items-center gap-6">
+          {navLinks.map((link) => (
+            <button
+              key={link.label}
+              type="button"
+              className={linkCls}
+              onClick={() => goToSection(link.href.slice(1))}
+            >
+              {link.label}
+            </button>
+          ))}
+          {pageLinks.map((link) => (
+            <Link
+              key={link.label}
+              to={link.route}
+              className={
+                isActive(link.route)
+                  ? "text-[length:var(--fs-sm)] font-semibold text-indigo"
+                  : linkCls
+              }
+            >
+              {link.label}
+            </Link>
+          ))}
         </div>
 
-        {/* Desktop Actions (Login & CTA) */}
-        <div className="hidden md:flex items-center gap-3">
-          <Link
-            to="/admin-hrd"
-            className="inline-flex items-center px-5 py-2.5 rounded-full border border-primary text-primary text-sm font-medium hover:bg-primary/10 transition-colors"
+        {/* Aksi desktop — tanpa Login (halaman admin hanya lewat URL) */}
+        <div className="hidden lg:flex items-center gap-2.5">
+          <button
+            type="button"
+            onClick={() => goToSection("contact")}
+            className="btn btn--primary !py-2.5 !px-5 !text-[13.5px]"
           >
-            Login
-          </Link>
-          <a
-            href="#contact"
-            className="inline-flex items-center px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity"
-          >
+            <MessageCircle size={15} />
             Konsultasi Gratis
-          </a>
+          </button>
         </div>
 
-        {/* Mobile Toggle */}
+        {/* Tombol menu mobile */}
         <button
-          className="md:hidden text-foreground"
+          className="lg:hidden grid place-items-center w-10 h-10 rounded-[var(--r-sm)] border border-[var(--border)] text-indigo"
           onClick={() => setOpen(!open)}
-          aria-label="Toggle menu"
+          aria-label={open ? "Tutup menu" : "Buka menu"}
+          aria-expanded={open}
         >
-          {open ? <X size={24} /> : <Menu size={24} />}
+          {open ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
 
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            className="md:hidden bg-background border-b border-border overflow-hidden"
-          >
-            <div className="flex flex-col gap-4 p-6">
-              {navLinks.map((link) =>
-                renderLink(
-                  link,
-                  "text-foreground/70 hover:text-primary font-medium",
-                  () => setOpen(false)
-                )
-              )}
-
-              {/* Mobile Actions (Login & CTA) */}
-              <div className="flex flex-col gap-3 mt-4 pt-4 border-t border-border">
+      {/* Drawer mobile */}
+      <div
+        className={`lg:hidden bg-white overflow-hidden border-t transition-[grid-template-rows] duration-300 ${
+          open
+            ? "grid grid-rows-[1fr] border-[var(--border)]"
+            : "grid grid-rows-[0fr] border-transparent"
+        }`}
+      >
+        <div className="min-h-0 overflow-y-auto max-h-[calc(100dvh-4rem)]">
+          <ul className="px-5">
+            {navLinks.map((link) => (
+              <li
+                key={link.label}
+                className="border-b border-[var(--border)] last:border-b-0"
+              >
+                <button
+                  type="button"
+                  className="block w-full text-left py-4 text-[length:var(--fs-body)] font-medium text-[color:var(--text)]"
+                  onClick={() => {
+                    setOpen(false);
+                    goToSection(link.href.slice(1));
+                  }}
+                >
+                  {link.label}
+                </button>
+              </li>
+            ))}
+            {pageLinks.map((link) => (
+              <li
+                key={link.label}
+                className="border-b border-[var(--border)] last:border-b-0"
+              >
                 <Link
-                  to="/admin-hrd"
-                  className="inline-flex items-center justify-center px-5 py-2.5 rounded-full border border-primary text-primary text-sm font-medium hover:bg-primary/10 transition-colors"
+                  to={link.route}
+                  className={`block py-4 text-[length:var(--fs-body)] ${
+                    isActive(link.route)
+                      ? "font-semibold text-indigo"
+                      : "font-medium text-[color:var(--text)]"
+                  }`}
                   onClick={() => setOpen(false)}
                 >
-                  Login
+                  {link.label}
                 </Link>
-                <a
-                  href="#contact"
-                  className="inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity"
-                  onClick={() => setOpen(false)}
-                >
-                  Konsultasi Gratis
-                </a>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              </li>
+            ))}
+          </ul>
+
+          <div className="flex flex-col gap-2.5 p-5 pt-4">
+            <button
+              type="button"
+              className="btn btn--primary btn--block"
+              onClick={() => {
+                setOpen(false);
+                goToSection("contact");
+              }}
+            >
+              <MessageCircle size={16} />
+              Konsultasi Gratis
+            </button>
+          </div>
+        </div>
+      </div>
     </nav>
   );
 };

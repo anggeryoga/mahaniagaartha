@@ -1,5 +1,4 @@
-import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, Star, Quote } from "lucide-react";
+import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { useState } from "react";
 import testimonialAvatar from "@/assets/testimonial-avatar.jpg";
 
@@ -30,104 +29,97 @@ const testimonials = [
 const TestimonialsSection = () => {
   const [current, setCurrent] = useState(0);
 
-  const next = () => setCurrent((prev) => (prev + 1) % testimonials.length);
-  const prev = () => setCurrent((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+  const next = () => setCurrent((p) => (p + 1) % testimonials.length);
+  const prev = () =>
+    setCurrent((p) => (p - 1 + testimonials.length) % testimonials.length);
 
   const t = testimonials[current];
 
   return (
-    <section id="testimonials" className="py-16 lg:py-24">
-      <div className="container mx-auto px-4 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          
-          {/* Left Content */}
-          <div>
-            <span className="text-xs font-semibold tracking-widest text-muted-foreground uppercase mb-3 block">
-              Testimoni Mitra
-            </span>
-
-            <h2 className="font-heading text-3xl lg:text-4xl text-foreground leading-tight mb-6">
-              Cerita Nyata Mereka yang{" "}
-              <span className="text-accent-foreground">
-                Sudah Mulai Usaha
-              </span>
+    <section id="testimonials" className="section section--white">
+      <div className="wrap">
+        <div className="sec-head sec-head--rule reveal">
+          <span className="sec-index">04</span>
+          <div className="sec-head__main">
+            <span className="eyebrow">Testimoni Mitra</span>
+            <h2 className="sec-title">
+              Cerita Nyata Mereka yang Sudah Mulai Usaha
             </h2>
+          </div>
+        </div>
 
-            <div className="flex items-center gap-4">
-              <a
-                href="#testimonials"
-                className="inline-flex items-center px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-medium"
-              >
-                Lihat Semua Testimoni
-              </a>
-
-              <div className="flex items-center gap-1">
-                <span className="text-lg font-bold text-foreground">4.9</span>
-                <div className="flex">
+        <div className="grid gap-[var(--gap)] lg:grid-cols-[.85fr_1.15fr] lg:gap-12 items-center">
+          {/* Kiri: ringkasan + navigasi */}
+          <div className="reveal">
+            <div className="flex items-center gap-3 mb-7">
+              <span className="text-[length:var(--fs-num)] font-bold leading-none text-indigo">
+                4.9
+              </span>
+              <span>
+                <span className="flex gap-0.5 mb-1">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={14} className="text-accent fill-accent" />
+                    <Star
+                      key={i}
+                      size={15}
+                      className="text-amber fill-amber"
+                    />
                   ))}
-                </div>
-                <span className="text-xs text-muted-foreground ml-1">
+                </span>
+                <span className="block text-[length:var(--fs-xs)] uppercase tracking-wider text-[color:var(--text-2)]">
                   Review Mitra
                 </span>
-              </div>
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                onClick={prev}
+                className="w-11 h-11 rounded-full border border-[var(--border-2)] grid place-items-center text-indigo transition-colors hover:border-purple hover:bg-purple-50"
+                aria-label="Testimoni sebelumnya"
+              >
+                <ChevronLeft size={18} />
+              </button>
+              <button
+                onClick={next}
+                className="w-11 h-11 rounded-full border border-[var(--border-2)] grid place-items-center text-indigo transition-colors hover:border-purple hover:bg-purple-50"
+                aria-label="Testimoni berikutnya"
+              >
+                <ChevronRight size={18} />
+              </button>
+              <span className="ml-2 text-[length:var(--fs-sm)] text-[color:var(--text-2)] tabular-nums">
+                {current + 1} / {testimonials.length}
+              </span>
             </div>
           </div>
 
-          {/* Testimonial Card */}
-          <motion.div
+          {/* Kanan: kutipan */}
+          <figure
             key={current}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.4 }}
-            className="bg-card rounded-2xl p-8 lg:p-10 border border-border"
+            className="card reveal !p-8 lg:!p-10 border-l-4 !border-l-blue"
           >
-            <Quote size={32} className="text-primary/30 mb-4" />
+            <blockquote className="text-[length:var(--fs-lead)] leading-[var(--lh-quiet)] text-[color:var(--text)] mb-7">
+              &ldquo;{t.quote}&rdquo;
+            </blockquote>
 
-            <p className="text-foreground leading-relaxed text-base lg:text-lg mb-8 font-heading italic">
-              "{t.quote}"
-            </p>
-
-            <div className="flex items-center justify-between">
-              
-              {/* Profile */}
-              <div className="flex items-center gap-3">
-                <img
-                  src={t.avatar}
-                  alt={t.name}
-                  className="w-10 h-10 rounded-full object-cover"
-                  loading="lazy"
-                  width={40}
-                  height={40}
-                />
-                <div>
-                  <p className="font-medium text-sm text-foreground">{t.name}</p>
-                  <p className="text-xs text-muted-foreground">{t.role}</p>
-                </div>
-              </div>
-
-              {/* Navigation */}
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={prev}
-                  className="w-9 h-9 rounded-full border border-border flex items-center justify-center hover:bg-secondary transition-colors"
-                  aria-label="Previous testimonial"
-                >
-                  <ChevronLeft size={16} />
-                </button>
-                <button
-                  onClick={next}
-                  className="w-9 h-9 rounded-full border border-border flex items-center justify-center hover:bg-secondary transition-colors"
-                  aria-label="Next testimonial"
-                >
-                  <ChevronRight size={16} />
-                </button>
-              </div>
-
-            </div>
-          </motion.div>
-
+            <figcaption className="flex items-center gap-3.5 pt-6 border-t border-[var(--border)]">
+              <img
+                src={t.avatar}
+                alt=""
+                className="w-11 h-11 object-cover photo--circle"
+                loading="lazy"
+                width={44}
+                height={44}
+              />
+              <span>
+                <span className="block font-semibold text-[color:var(--text)]">
+                  {t.name}
+                </span>
+                <span className="block text-[length:var(--fs-xs)] text-[color:var(--text-2)]">
+                  {t.role}
+                </span>
+              </span>
+            </figcaption>
+          </figure>
         </div>
       </div>
     </section>
