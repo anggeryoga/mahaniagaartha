@@ -1088,13 +1088,31 @@
     color: var(--text-2);
   }
 
-  .loker__dot {
-    width: 5px;
-    height: 5px;
-    border-radius: var(--r-pill);
-    background: var(--purple-100);
+  /* Nomor urut daftar — pengganti bullet, supaya mudah dihitung dan dipindai */
+  .loker__no {
     flex-shrink: 0;
-    margin-top: 8px;
+    width: 24px;
+    height: 24px;
+    border-radius: 7px;
+    display: grid;
+    place-items: center;
+    background: var(--purple-50);
+    color: var(--purple);
+    font-size: 11px;
+    font-weight: var(--fw-bold);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    margin-top: 1px;
+  }
+
+  /* Di ponsel sedikit lebih kecil agar teks tetap lega */
+  @media (max-width: 620px) {
+    .loker__no {
+      width: 22px;
+      height: 22px;
+      font-size: 10.5px;
+      border-radius: 6px;
+    }
   }
 
   /* Blok "kami mencari" */

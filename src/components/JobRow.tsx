@@ -71,9 +71,11 @@ const JobRow = ({ job, mailto, defaultOpen = false }: Props) => {
             <div className="loker__block">
               <h4>Kualifikasi</h4>
               <ul>
-                {job.qualifications.map((item) => (
+                {job.qualifications.map((item, i) => (
                   <li key={item}>
-                    <span className="loker__dot" aria-hidden="true" />
+                    <span className="loker__no" aria-hidden="true">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
                     <span>{item}</span>
                   </li>
                 ))}
@@ -83,9 +85,11 @@ const JobRow = ({ job, mailto, defaultOpen = false }: Props) => {
             <div className="loker__block">
               <h4>Tanggung Jawab</h4>
               <ul>
-                {job.responsibilities.map((item) => (
+                {job.responsibilities.map((item, i) => (
                   <li key={item}>
-                    <span className="loker__dot" aria-hidden="true" />
+                    <span className="loker__no" aria-hidden="true">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
                     <span>{item}</span>
                   </li>
                 ))}
