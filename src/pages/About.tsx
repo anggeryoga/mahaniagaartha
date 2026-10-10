@@ -13,7 +13,6 @@ import {
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
-import { Link } from "react-router-dom";
 
 const brands = [
   "Mybestea",
@@ -237,13 +236,15 @@ const About = () => {
                   Hubungi representatif kami untuk diskusi lebih lanjut.
                 </p>
               </div>
-              <Link
-                to="/produk"
+              {/* Halaman /produk sudah dihapus, diarahkan ke section brand
+                  di Beranda agar tidak 404. */}
+              <a
+                href="/#partners"
                 className="shrink-0 w-14 h-14 grid place-items-center rounded-full bg-amber text-indigo transition-transform hover:rotate-45"
-                aria-label="Lihat paket usaha"
+                aria-label="Lihat brand kami"
               >
                 <ArrowRight size={24} />
-              </Link>
+              </a>
             </div>
           </div>
         </div>
@@ -266,9 +267,9 @@ const About = () => {
                 pertama untuk mengamankan wilayah pemasaran di kota Anda.
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-3">
-                <Link to="/produk" className="btn btn--primary btn--lg">
-                  Lihat Paket Usaha
-                </Link>
+                <a href="/#partners" className="btn btn--primary btn--lg">
+                  Lihat Brand Kami
+                </a>
                 <a
                   href="https://wa.me/6281212125422"
                   target="_blank"
