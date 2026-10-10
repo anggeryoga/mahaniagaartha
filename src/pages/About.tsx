@@ -18,20 +18,21 @@ const brands = [
   "Mybestea",
   "You Need Mie",
   "Mentoast",
-  "Kopi Ibukota",
   "Esteh Ibukota",
   "Kentang Gantenk",
-  "Raja Steak",
-  "Nice Coffee",
-  "Seblak Express",
-  "Chick Ichick",
-  "Merlumer",
+  "K-Mie",
+  "Benice Coffee",
+  "Breadcoin",
   "Chickuruyuk",
-  "Tahu Nyonyor",
+  "El Choco",
+  "Merlumer",
+  "Nicepresso",
+  "Nyemilin",
+  "Xuancha",
 ];
 
 const metrics = [
-  { icon: Store, val: "13+", label: "Brand portofolio" },
+  { icon: Store, val: "14", label: "Brand portofolio" },
   { icon: Users, val: "500+", label: "Mitra aktif" },
   { icon: BarChart3, val: "95%", label: "Success rate" },
   { icon: CheckCircle2, val: "100%", label: "SOP standar" },
@@ -99,7 +100,7 @@ const About = () => {
         title="Membangun Kesuksesan Bisnis Kuliner Anda"
         lead="Eksekusi bisnis lebih presisi, efisien, dan menguntungkan melalui standarisasi paket usaha yang telah teruji di pasaran."
         facts={[
-          { num: "13+", label: "Brand portofolio" },
+          { num: "14", label: "Brand portofolio" },
           { num: "500+", label: "Mitra aktif" },
           { num: "95%", label: "Success rate" },
         ]}

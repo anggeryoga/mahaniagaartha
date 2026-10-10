@@ -3,7 +3,7 @@ import heroImage from "@/assets/hero-meeting.jpg";
 
 const stats = [
   { num: "4500+", label: "Mitra usaha aktif" },
-  { num: "9", label: "Brand siap pakai" },
+  { num: "14", label: "Brand siap pakai" },
   { num: "100%", label: "Pendampingan usaha" },
 ];
 

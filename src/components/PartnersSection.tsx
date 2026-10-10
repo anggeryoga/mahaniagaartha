@@ -1,13 +1,18 @@
 const partners = [
-  { name: "Mybestea", logo: "/logos/1.webp" },
-  { name: "You Need Mie", logo: "/logos/2.webp" },
-  { name: "Mentoast", logo: "/logos/3.webp" },
-  { name: "Kopi Ibukota", logo: "/logos/4.webp" },
-  { name: "Esteh Ibukota", logo: "/logos/5.webp" },
-  { name: "Kentang Gantenk", logo: "/logos/6.webp" },
-  { name: "Raja Steak", logo: "/logos/7.webp" },
-  { name: "Nice Coffee", logo: "/logos/8.webp" },
-  { name: "Seblak Express", logo: "/logos/9.webp" },
+  { name: "Mybestea", logo: "/logos/mybestea.webp" },
+  { name: "You Need Mie", logo: "/logos/youneedmie.webp" },
+  { name: "Mentoast", logo: "/logos/mentoast.webp" },
+  { name: "Esteh Ibukota", logo: "/logos/estehibukota.webp" },
+  { name: "Kentang Gantenk", logo: "/logos/kentang-gantenk.webp" },
+  { name: "K-Mie", logo: "/logos/k-mie.webp" },
+  { name: "Benice Coffee", logo: "/logos/benicecoffee.webp" },
+  { name: "Breadcoin", logo: "/logos/breadcoin.webp" },
+  { name: "Chickuruyuk", logo: "/logos/chickuruyuk.webp" },
+  { name: "El Choco", logo: "/logos/elchoco.webp" },
+  { name: "Merlumer", logo: "/logos/merlumer.webp" },
+  { name: "Nicepresso", logo: "/logos/nicepresso.webp" },
+  { name: "Nyemilin", logo: "/logos/nyemilin.webp" },
+  { name: "Xuancha", logo: "/logos/xuancha.webp" },
 ];
 
 const row1 = partners.slice(0, Math.ceil(partners.length / 2));
@@ -23,7 +28,7 @@ const PartnersSection = () => {
         <div className="sec-head sec-head--split reveal">
           <div>
             <span className="eyebrow">Brand Usaha Kami</span>
-            <h2 className="sec-title">Sembilan Brand, Satu Sistem</h2>
+            <h2 className="sec-title">Empat Belas Brand, Satu Sistem</h2>
           </div>
           <p className="sec-sub">
             Semua brand di bawah ini sudah beroperasi dan bisa Anda pilih
