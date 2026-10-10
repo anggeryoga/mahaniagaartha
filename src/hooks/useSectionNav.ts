@@ -58,8 +58,13 @@ export const useSectionNav = () => {
 };
 
 /**
- * Dipasang sekali di App. Menjalankan gulir setelah navigasi
- * antar-halaman selesai dan elemen target sudah ada di DOM.
+ * Dipasang sekali di App. Menangani gulir setelah navigasi antar-halaman:
+ * - Ada target section -> meluncur ke section itu
+ * - Tidak ada target     -> kembali ke atas halaman
+ *
+ * Tanpa cabang kedua, posisi gulir halaman sebelumnya terbawa ke halaman
+ * baru. Akibatnya pengunjung yang menekan "Karir" saat sudah menggulir di
+ * Beranda akan mendarat di tengah halaman karir, bukan di judulnya.
  */
 export const useScrollToSectionOnMount = () => {
   const location = useLocation();
@@ -69,7 +74,15 @@ export const useScrollToSectionOnMount = () => {
       (location.state as { scrollTo?: string } | null)?.scrollTo ||
       (location.hash ? location.hash.slice(1) : "");
 
-    if (!id) return;
+    // Tanpa target: kembalikan ke atas halaman.
+    if (!id) {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      return;
+    }
+
+    // Ada target: gulir ke section setelah DOM siap.
+    // Sekaligus pastikan posisi tidak tertinggal dari halaman sebelumnya.
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
 
     const raf = requestAnimationFrame(() => {
       const el = document.getElementById(id);

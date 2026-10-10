@@ -116,42 +116,52 @@ const Navbar = () => {
         }`}
       >
         <div className="min-h-0 overflow-y-auto max-h-[calc(100dvh-4rem)]">
-          <ul className="px-5">
-            {navLinks.map((link) => (
+          <ul className="px-5 py-1">
+            {navLinks.map((link, i) => (
               <li
                 key={link.label}
                 className="border-b border-[var(--border)] last:border-b-0"
               >
                 <button
                   type="button"
-                  className="block w-full text-left py-4 text-[length:var(--fs-body)] font-medium text-[color:var(--text)]"
+                  className="group flex w-full items-center gap-3.5 text-left py-4 text-[length:var(--fs-body)] font-medium text-[color:var(--text)]"
                   onClick={() => {
                     setOpen(false);
                     goToSection(link.href.slice(1));
                   }}
                 >
-                  {link.label}
+                  <span className="nav-nomor" aria-hidden="true">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="flex-1">{link.label}</span>
                 </button>
               </li>
             ))}
-            {pageLinks.map((link) => (
-              <li
-                key={link.label}
-                className="border-b border-[var(--border)] last:border-b-0"
-              >
-                <Link
-                  to={link.route}
-                  className={`block py-4 text-[length:var(--fs-body)] ${
-                    isActive(link.route)
-                      ? "font-semibold text-indigo"
-                      : "font-medium text-[color:var(--text)]"
-                  }`}
-                  onClick={() => setOpen(false)}
+            {pageLinks.map((link, i) => {
+              const aktif = isActive(link.route);
+              return (
+                <li
+                  key={link.label}
+                  className="border-b border-[var(--border)] last:border-b-0"
                 >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
+                  <Link
+                    to={link.route}
+                    className={`group flex items-center gap-3.5 py-4 text-[length:var(--fs-body)] ${
+                      aktif ? "font-semibold text-indigo" : "font-medium text-[color:var(--text)]"
+                    }`}
+                    onClick={() => setOpen(false)}
+                  >
+                    <span
+                      className={`nav-nomor ${aktif ? "nav-nomor--aktif" : ""}`}
+                      aria-hidden="true"
+                    >
+                      {String(navLinks.length + i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="flex-1">{link.label}</span>
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
 
           <div className="flex flex-col gap-2.5 p-5 pt-4">

@@ -678,6 +678,30 @@
   }
 
   /* ======================================================================
+     NOMOR URUT MENU — dipakai di drawer mobile agar daftar mudah dipindai
+     ====================================================================== */
+  .nav-nomor {
+    flex-shrink: 0;
+    width: 30px;
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-bold);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+    color: var(--purple);
+    transition: color var(--dur) var(--ease);
+  }
+
+  .nav-nomor--aktif {
+    color: var(--amber-text);
+  }
+
+  /* Saat baris disorot atau ditekan, nomor ikut menguat */
+  button:hover > .nav-nomor,
+  a:hover > .nav-nomor {
+    color: var(--indigo);
+  }
+
+  /* ======================================================================
      KENAPA PILIH KAMI — satu kartu unggulan + baris kartu pendukung.
      Berbeda dari Solusi Kami yang berbentuk daftar bernomor.
      ====================================================================== */
