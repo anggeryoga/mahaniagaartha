@@ -5,7 +5,7 @@ import { ArrowUpRight, MessageCircle } from "lucide-react";
 const teamMembers = [
   {
     name: "Livya Ayu",
-    role: "Senior Sales Marketing",
+    role: "Sales Marketing",
     image: "/dm/dm%201.webp",
     phone: "6282124952606",
   },
@@ -14,12 +14,6 @@ const teamMembers = [
     role: "Sales Marketing",
     image: "/dm/dm%202.webp",
     phone: "6285117276822",
-  },
-  {
-    name: "Putri Sri",
-    role: "Sales Marketing",
-    image: "/dm/dm%203.webp",
-    phone: "6281212126722",
   },
   {
     name: "Kristianti",

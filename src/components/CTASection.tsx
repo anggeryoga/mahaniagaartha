@@ -1,12 +1,7 @@
-import { ArrowRight, Mail, Phone, MapPin, ExternalLink } from "lucide-react";
-
-const WA_LINK =
-  "https://wa.me/6281212126722?text=Halo%20Maha%20Niaga%20Artha,%20saya%20mendapatkan%20informasi%20dari%20website%20resmi%20dan%20tertarik%20untuk%20memulai%20usaha.%20Bisa%20dibantu%3F";
+import { Mail, Phone, MapPin, ExternalLink } from "lucide-react";
 
 const MAPS_EMBED =
   "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.5980769613957!2d110.6806204!3d-6.5723027!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e711f570d88e8b7%3A0xef17108ab63f4d5b!2sCV%20Maha%20Niaga%20Artha!5e0!3m2!1sen!2sid!4v1791561401024!5m2!1sen!2sid";
-
-const MAPS_LINK = "https://maps.google.com/?q=CV+Maha+Niaga+Artha+Jepara";
 
 const CTASection = () => {
   return (
@@ -30,16 +25,19 @@ const CTASection = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <a href={WA_LINK} className="btn btn--on-dark btn--lg">
-                Konsultasi via WhatsApp
-                <ArrowRight size={16} />
-              </a>
               <a
                 href="tel:+6281212125422"
-                className="btn btn--ghost-light btn--lg"
+                className="btn btn--on-dark btn--lg"
               >
                 <Phone size={16} />
                 Telepon Sekarang
+              </a>
+              <a
+                href="mailto:cvmahaniagaartha.hrd@gmail.com"
+                className="btn btn--ghost-light btn--lg"
+              >
+                <Mail size={16} />
+                Kirim Email
               </a>
             </div>
 
@@ -85,7 +83,7 @@ const CTASection = () => {
 
           <div className="text-center mt-5">
             <a
-              href={MAPS_LINK}
+              href="https://maps.google.com/?q=CV+Maha+Niaga+Artha+Jepara"
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn--outline"

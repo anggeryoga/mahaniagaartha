@@ -579,6 +579,238 @@
     border: 0;
     display: block;
   }
+
+  /* ======================================================================
+     SOLUSI KAMI — daftar bernomor bergaya editorial.
+     Sengaja BUKAN grid kartu, supaya tidak kembar dengan "Kenapa Pilih Kami".
+     ====================================================================== */
+  .solusi-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .solusi-row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--sp-3);
+    align-items: start;
+    padding-block: clamp(20px, 2.4vw, 30px);
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    transition: background-color var(--dur) var(--ease);
+  }
+
+  .solusi-row:last-child {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  }
+
+  /* Blok judul + keterangan, supaya keduanya tetap satu sel grid */
+  .solusi-body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  /* Di layar lebar: nomor | judul | keterangan sejajar satu baris */
+  @media (min-width: 900px) {
+    .solusi-row {
+      grid-template-columns: 92px minmax(0, 0.85fr) minmax(0, 1.15fr);
+      gap: clamp(20px, 3vw, 44px);
+      align-items: center;
+    }
+    .solusi-row:hover {
+      background: rgba(255, 255, 255, 0.04);
+    }
+    /* Di layar lebar blok dipecah lagi supaya judul & teks jadi kolom 2 dan 3 */
+    .solusi-body {
+      display: contents;
+    }
+    .solusi-head {
+      margin-bottom: 0;
+    }
+  }
+
+  .solusi-num {
+    font-size: clamp(30px, 3.6vw, 46px);
+    font-weight: var(--fw-bold);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: rgba(255, 255, 255, 0.26);
+    font-variant-numeric: tabular-nums;
+    transition: color var(--dur) var(--ease);
+  }
+
+  .solusi-row:hover .solusi-num {
+    color: var(--amber);
+  }
+
+  .solusi-head {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    font-size: var(--fs-h4);
+    font-weight: var(--fw-semi);
+    color: #fff;
+    line-height: 1.25;
+  }
+
+  .solusi-head svg {
+    flex-shrink: 0;
+    color: var(--amber);
+  }
+
+  .solusi-text {
+    font-size: var(--fs-sm);
+    line-height: var(--lh-quiet);
+    color: rgba(255, 255, 255, 0.68);
+  }
+
+  /* Di HP: nomor di kiri, judul + teks menumpuk di kanan */
+  @media (max-width: 899px) {
+    .solusi-row {
+      grid-template-columns: 44px minmax(0, 1fr);
+      gap: var(--sp-2);
+    }
+    .solusi-num {
+      font-size: 30px;
+      padding-top: 2px;
+    }
+  }
+
+  /* ======================================================================
+     KENAPA PILIH KAMI — satu kartu unggulan + baris kartu pendukung.
+     Berbeda dari Solusi Kami yang berbentuk daftar bernomor.
+     ====================================================================== */
+  .alasan {
+    display: grid;
+    gap: var(--gap);
+  }
+
+  @media (min-width: 960px) {
+    .alasan {
+      grid-template-columns: minmax(0, 1.02fr) minmax(0, 1.18fr);
+      align-items: stretch;
+    }
+  }
+
+  /* Kartu unggulan — panel indigo */
+  .alasan-utama {
+    background: var(--indigo);
+    border-radius: var(--r-xl);
+    padding: clamp(28px, 3vw, 42px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--sp-4);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .alasan-utama__badge {
+    width: 52px;
+    height: 52px;
+    border-radius: var(--r-md);
+    display: grid;
+    place-items: center;
+    background: var(--amber);
+    color: var(--indigo);
+    flex-shrink: 0;
+  }
+
+  .alasan-utama h3 {
+    color: #fff;
+    font-size: var(--fs-h3);
+    font-weight: var(--fw-semi);
+    line-height: 1.25;
+    margin-bottom: var(--sp-2);
+  }
+
+  .alasan-utama p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: var(--fs-sm);
+    line-height: var(--lh-quiet);
+  }
+
+  /* Lingkaran dekoratif tipis di sudut */
+  .alasan-utama__ring {
+    position: absolute;
+    right: -70px;
+    bottom: -90px;
+    width: 230px;
+    height: 230px;
+    border-radius: var(--r-pill);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    pointer-events: none;
+  }
+
+  /* Tiga kartu pendukung */
+  .alasan-pendukung {
+    display: grid;
+    gap: var(--gap);
+  }
+
+  @media (min-width: 620px) {
+    .alasan-pendukung {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 960px) {
+    .alasan-pendukung {
+      grid-template-columns: 1fr;
+      grid-auto-rows: 1fr;
+    }
+  }
+
+  /* Baris kartu: ikon kiri, teks kanan. Sengaja TIDAK seperti .card biasa. */
+  .alasan-bar {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--sp-2);
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: clamp(18px, 1.8vw, 24px);
+    transition: border-color var(--dur) var(--ease),
+      box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
+  }
+
+  .alasan-bar:hover {
+    border-color: var(--purple-100);
+    box-shadow: var(--sh-sm);
+    transform: translateX(3px);
+  }
+
+  .alasan-bar__icon {
+    width: 42px;
+    height: 42px;
+    border-radius: var(--r-md);
+    display: grid;
+    place-items: center;
+    background: var(--purple-50);
+    color: var(--purple);
+    flex-shrink: 0;
+    transition: background-color var(--dur) var(--ease);
+  }
+
+  .alasan-bar:hover .alasan-bar__icon {
+    background: var(--amber-100);
+    color: var(--amber-text);
+  }
+
+  .alasan-bar h3 {
+    font-size: var(--fs-h4);
+    font-weight: var(--fw-semi);
+    color: var(--indigo);
+    line-height: 1.3;
+    margin-bottom: 4px;
+  }
+
+  .alasan-bar p {
+    font-size: var(--fs-sm);
+    color: var(--text-2);
+    line-height: var(--lh-quiet);
+  }
 }
 
 /* ==========================================================================

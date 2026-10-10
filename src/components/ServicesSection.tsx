@@ -27,32 +27,38 @@ const services = [
   },
 ];
 
+/** Daftar bernomor, bukan grid kartu — sengaja dibedakan dari section alasan. */
 const ServicesSection = () => {
   return (
-    <section className="section section--paper">
+    <section className="section section--blue">
       <div className="wrap">
         {/* Varian majalah: judul kiri, keterangan di kolom kanan */}
         <div className="sec-head sec-head--split reveal">
           <div>
-            <span className="eyebrow">Solusi Kami</span>
+            <span className="eyebrow eyebrow--light">Solusi Kami</span>
             <h2 className="sec-title">
               Semua yang Anda Butuhkan untuk Memulai Usaha
             </h2>
           </div>
-          <p className="sec-sub">
+          <p className="sec-sub !text-white/65">
             Empat hal inti yang kami siapkan supaya Anda bisa langsung
             berjualan, tanpa harus memikirkan hal teknis dari nol.
           </p>
         </div>
 
-        <div className="grid gap-[var(--gap)] md:grid-cols-2 lg:grid-cols-4">
-          {services.map((service) => (
-            <div key={service.title} className="card card--hover reveal">
-              <span className="card__icon">
-                <service.icon size={20} />
+        <div className="solusi-list">
+          {services.map((service, i) => (
+            <div key={service.title} className="solusi-row reveal">
+              <span className="solusi-num" aria-hidden="true">
+                {String(i + 1).padStart(2, "0")}
               </span>
-              <h3 className="card__title">{service.title}</h3>
-              <p className="card__text">{service.description}</p>
+              <div className="solusi-body">
+                <h3 className="solusi-head">
+                  <service.icon size={19} aria-hidden="true" />
+                  {service.title}
+                </h3>
+                <p className="solusi-text">{service.description}</p>
+              </div>
             </div>
           ))}
         </div>
