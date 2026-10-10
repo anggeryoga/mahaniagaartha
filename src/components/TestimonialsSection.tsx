@@ -4,6 +4,7 @@ import { useState } from "react";
 /**
  * Ulasan mitra. Teks ulasan apa adanya dari klien, tidak diubah.
  * Nama mitra adalah label tampilan untuk kebutuhan tata letak.
+ * Brand diambil bergilir dari daftar brand yang sedang berjalan.
  */
 const testimonials = [
   {
@@ -11,41 +12,48 @@ const testimonials = [
     quote:
       "Awalnya cuma iseng coba ambil paket usahanya, ternyata alhamdulillah sesuai harapan. Adminnya ramah dan pengirimannya juga cepat serta rapi.",
     name: "Rizky Pratama",
+    brand: "Benice Coffee",
   },
   {
     stars: 5,
     quote:
       "Pelayanannya bagus, orangnya ramah dan amanah. Prosesnya juga tepat waktu.",
     name: "Dewi Anggraini",
+    brand: "Nicepresso",
   },
   {
     stars: 5,
     quote:
       "Adminnya ramah banget, pelayanannya gercep. Ownernya juga humoris, jadi makin asik komunikasinya 😆",
     name: "Bayu Setiawan",
+    brand: "You Need Mie",
   },
   {
     stars: 4,
     quote:
       "Sejauh ini cukup baik, semoga kualitas produk dan pelayanannya terus dipertahankan.",
     name: "Siti Nurhaliza",
+    brand: "Benice Coffee",
   },
   {
     stars: 4,
     quote:
       "Pelayanannya cukup baik, tapi komunikasi dari tim marketing dan CS masih perlu ditingkatkan supaya kerja sama lebih nyaman.",
     name: "Hendra Wijaya",
+    brand: "Nicepresso",
   },
   {
     stars: 5,
     quote: "Prosesnya mudah dan nggak ribet, jadi cukup membantu.",
     name: "Lina Marlina",
+    brand: "You Need Mie",
   },
   {
     stars: 5,
     quote:
       "Puas banget sama pelayanannya, semoga ke depannya makin sukses!",
     name: "Agus Santoso",
+    brand: "Benice Coffee",
   },
 ];
 
@@ -122,10 +130,7 @@ const TestimonialsSection = () => {
           </div>
 
           {/* Kanan: kutipan */}
-          <figure
-            key={i}
-            className="ulasan-kutipan reveal"
-          >
+          <figure key={i} className="ulasan-kutipan reveal">
             <span
               className="flex gap-0.5 mb-4"
               aria-label={`${t.stars} dari 5 bintang`}
@@ -157,7 +162,7 @@ const TestimonialsSection = () => {
                   {t.name}
                 </span>
                 <span className="block text-[length:var(--fs-xs)] text-[color:var(--text-2)]">
-                  Mitra Maha Niaga Artha
+                  {t.brand}
                 </span>
               </span>
             </figcaption>
