@@ -811,6 +811,293 @@
     color: var(--text-2);
     line-height: var(--lh-quiet);
   }
+
+  /* ======================================================================
+     LOWONGAN KERJA — baris lebar yang bisa dibuka-tutup.
+     Menggantikan tiga kartu tinggi 1400px yang membuat tombol lamaran
+     terkubur jauh di bawah layar.
+     ====================================================================== */
+  .loker-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+  }
+
+  .loker {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--r-xl);
+    overflow: hidden;
+    transition: border-color var(--dur) var(--ease),
+      box-shadow var(--dur) var(--ease);
+  }
+
+  .loker[data-open="true"] {
+    border-color: var(--purple-100);
+    box-shadow: var(--sh-md);
+  }
+
+  /* ---- Kepala baris: ikon, judul, meta, tombol ---- */
+  .loker__head {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--sp-3);
+    padding: clamp(20px, 2.2vw, 28px);
+    cursor: pointer;
+    background: none;
+    border: 0;
+    width: 100%;
+    text-align: left;
+  }
+
+  .loker__icon {
+    width: 52px;
+    height: 52px;
+    border-radius: var(--r-md);
+    display: grid;
+    place-items: center;
+    background: var(--purple-50);
+    color: var(--purple);
+    flex-shrink: 0;
+    transition: background-color var(--dur) var(--ease);
+  }
+
+  .loker[data-open="true"] .loker__icon {
+    background: var(--indigo);
+    color: #fff;
+  }
+
+  .loker__title {
+    font-size: var(--fs-h3);
+    font-weight: var(--fw-semi);
+    color: var(--indigo);
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+
+  .loker__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    font-size: var(--fs-xs);
+    color: var(--text-2);
+  }
+
+  .loker__meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .loker__meta svg {
+    color: var(--indigo);
+    flex-shrink: 0;
+  }
+
+  /* Tombol buka-tutup */
+  .loker__toggle {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--r-pill);
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--border);
+    background: #fff;
+    color: var(--purple);
+    flex-shrink: 0;
+    transition: transform var(--dur) var(--ease),
+      background-color var(--dur) var(--ease), color var(--dur) var(--ease),
+      border-color var(--dur) var(--ease);
+  }
+
+  .loker__toggle svg {
+    transition: transform var(--dur-slow) var(--ease);
+  }
+
+  .loker[data-open="true"] .loker__toggle {
+    background: var(--purple);
+    border-color: var(--purple);
+    color: #fff;
+  }
+
+  .loker[data-open="true"] .loker__toggle svg {
+    transform: rotate(180deg);
+  }
+
+  /* Ringkasan singkat — selalu terlihat walau tertutup */
+  .loker__summary {
+    grid-column: 1 / -1;
+    font-size: var(--fs-sm);
+    color: var(--text-2);
+    line-height: var(--lh-quiet);
+    padding-top: 2px;
+  }
+
+  /* ---- Badge jumlah syarat ---- */
+  .loker__count {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-semi);
+    color: var(--indigo);
+    background: var(--indigo-50);
+    border-radius: var(--r-pill);
+    padding: 4px 11px;
+  }
+
+  /* ---- Badan: detail yang bisa dibuka-tutup ---- */
+  .loker__body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows var(--dur-slow) var(--ease);
+  }
+
+  .loker[data-open="true"] .loker__body {
+    grid-template-rows: 1fr;
+  }
+
+  .loker__body > div {
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  .loker__inner {
+    padding: 0 clamp(20px, 2.2vw, 28px) clamp(20px, 2.2vw, 28px);
+    display: grid;
+    gap: var(--sp-5);
+  }
+
+  /* Dua kolom di layar lebar supaya tidak jadi satu daftar sangat panjang */
+  @media (min-width: 860px) {
+    .loker__inner {
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+    }
+    .loker__inner > .loker__cta {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .loker__block h4 {
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-bold);
+    color: var(--text);
+    margin-bottom: var(--sp-2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .loker__block h4::before {
+    content: "";
+    width: 14px;
+    height: 2px;
+    border-radius: 1px;
+    background: var(--purple);
+    flex-shrink: 0;
+  }
+
+  .loker__block ul {
+    display: grid;
+    gap: 10px;
+  }
+
+  .loker__block li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: var(--fs-sm);
+    line-height: var(--lh-quiet);
+    color: var(--text-2);
+  }
+
+  .loker__dot {
+    width: 5px;
+    height: 5px;
+    border-radius: var(--r-pill);
+    background: var(--purple-100);
+    flex-shrink: 0;
+    margin-top: 8px;
+  }
+
+  /* Blok "kami mencari" */
+  .loker__tag {
+    border-radius: var(--r-md);
+    background: var(--amber-100);
+    border: 1px solid var(--amber);
+    padding: 14px 16px;
+    grid-column: 1 / -1;
+  }
+
+  .loker__tag span {
+    display: block;
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--amber-text);
+    margin-bottom: 4px;
+  }
+
+  .loker__tag p {
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-semi);
+    color: var(--text);
+    line-height: 1.45;
+  }
+
+  /* ---- Ajakan melamar ---- */
+  .loker__cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-3);
+    padding-top: var(--sp-4);
+    border-top: 1px solid var(--border);
+  }
+
+  .loker__cta .loker__subject {
+    font-size: var(--fs-xs);
+    color: var(--text-2);
+  }
+
+  .loker__cta .loker__subject b {
+    color: var(--text);
+    font-weight: var(--fw-semi);
+  }
+
+  /* ======================================================================
+     BENEFIT — satu baris ringkas, bukan lima kartu besar
+     ====================================================================== */
+  .benefit-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: clamp(18px, 2vw, 24px);
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--r-xl);
+  }
+
+  .benefit-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    color: var(--text);
+    background: var(--indigo-50);
+    border-radius: var(--r-pill);
+    padding: 11px 18px;
+  }
+
+  .benefit-pill svg {
+    color: var(--purple);
+    flex-shrink: 0;
+  }
 }
 
 /* ==========================================================================

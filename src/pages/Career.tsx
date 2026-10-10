@@ -3,14 +3,13 @@ import {
   Users,
   ShoppingCart,
   Video,
-  MapPin,
-  Clock,
   Mail,
   CheckCircle2,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
+import JobRow from "@/components/JobRow";
 
 const HR_EMAIL = "cvmahaniagaartha.hrd@gmail.com";
 
@@ -107,8 +106,8 @@ const benefits = [
   "Gaji pokok",
   "THR & Tunjangan",
   "BPJS Kesehatan",
-  "Makan Siang Gratis",
-  "Lingkungan kerja yang nyaman & positif",
+  "Makan siang gratis",
+  "Lingkungan kerja positif",
 ];
 
 const steps = [
@@ -221,14 +220,12 @@ const Career = () => {
             </p>
           </div>
 
-          <div className="grid gap-[var(--gap)] sm:grid-cols-2 lg:grid-cols-5">
+          <div className="benefit-strip reveal">
             {benefits.map((benefit) => (
-              <div key={benefit} className="card reveal text-center">
-                <CheckCircle2 className="mx-auto mb-3.5 text-indigo" size={24} />
-                <p className="font-semibold text-[length:var(--fs-sm)] text-[color:var(--text)]">
-                  {benefit}
-                </p>
-              </div>
+              <span key={benefit} className="benefit-pill">
+                <CheckCircle2 size={16} aria-hidden="true" />
+                {benefit}
+              </span>
             ))}
           </div>
         </div>
@@ -249,94 +246,15 @@ const Career = () => {
             </div>
           </div>
 
-          <div className="grid gap-[var(--gap)] md:grid-cols-2 xl:grid-cols-3">
-            {careers.map((career) => {
-              const Icon = career.icon;
-              return (
-                <article key={career.title} className="card card--hover reveal">
-                  <div className="flex items-start gap-4 mb-5">
-                    <span className="card__icon !mb-0">
-                      <Icon size={20} />
-                    </span>
-                    <div>
-                      <h3 className="card__title !mb-1.5">{career.title}</h3>
-                      <div className="flex flex-wrap items-center gap-3 text-[length:var(--fs-xs)] text-[color:var(--text-2)]">
-                        <span className="flex items-center gap-1.5">
-                          <Clock size={13} className="text-indigo" />
-                          {career.type}
-                        </span>
-                        <span className="flex items-center gap-1.5">
-                          <MapPin size={13} className="text-indigo" />
-                          {career.location}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <p className="card__text mb-6">{career.description}</p>
-
-                  <div className="mb-6">
-                    <h4 className="text-[length:var(--fs-sm)] font-bold text-[color:var(--text)] mb-3">
-                      Kualifikasi
-                    </h4>
-                    <ul className="space-y-2.5">
-                      {career.qualifications.map((item, i) => (
-                        <li
-                          key={i}
-                          className="flex items-start gap-2.5 text-[length:var(--fs-sm)] leading-[var(--lh-quiet)] text-[color:var(--text-2)]"
-                        >
-                          <span className="shrink-0 w-5 h-5 mt-0.5 rounded-[6px] bg-purple-50 text-indigo grid place-items-center text-[10px] font-bold">
-                            {i + 1}
-                          </span>
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="mb-6">
-                    <h4 className="text-[length:var(--fs-sm)] font-bold text-[color:var(--text)] mb-3">
-                      Job Desk
-                    </h4>
-                    <ul className="space-y-2.5">
-                      {career.responsibilities.map((item, i) => (
-                        <li
-                          key={i}
-                          className="flex items-start gap-2.5 text-[length:var(--fs-sm)] leading-[var(--lh-quiet)] text-[color:var(--text-2)]"
-                        >
-                          <span className="shrink-0 w-1.5 h-1.5 mt-[9px] rounded-full bg-indigo" />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {career.extra && (
-                    <div className="mb-6 rounded-[var(--r-md)] bg-purple-50 border border-purple-100 p-4">
-                      <p className="text-[length:var(--fs-xs)] uppercase tracking-wider font-bold text-indigo mb-1">
-                        Kami Mencari Kamu yang
-                      </p>
-                      <p className="text-[length:var(--fs-sm)] font-semibold text-[color:var(--text)]">
-                        {career.extra}
-                      </p>
-                    </div>
-                  )}
-
-                  <div className="mt-auto">
-                    <a
-                      href={createMailto(career)}
-                      className="btn btn--primary btn--block"
-                    >
-                      <Mail size={16} />
-                      Kirim Lamaran via Email
-                    </a>
-                    <p className="text-center text-[length:var(--fs-xs)] text-[color:var(--text-2)] mt-2.5">
-                      Subject: {career.subject}
-                    </p>
-                  </div>
-                </article>
-              );
-            })}
+          <div className="loker-list">
+            {careers.map((career, i) => (
+              <JobRow
+                key={career.title}
+                job={career}
+                mailto={createMailto(career)}
+                defaultOpen={i === 0}
+              />
+            ))}
           </div>
         </div>
       </section>
