@@ -1,7 +1,15 @@
-import { Users, TrendingUp, Award } from "lucide-react";
+import { Shield, Users, TrendingUp, Award } from "lucide-react";
 
-/** Tiga poin, ditampilkan sebagai baris kartu. */
-const alasan = [
+/** Poin unggulan — ditonjolkan sebagai kartu utama. */
+const utama = {
+  icon: Shield,
+  title: "Aman & Terpercaya",
+  description:
+    "Konsep usaha sudah teruji dan digunakan oleh banyak mitra, sehingga lebih aman untuk memulai bisnis. Anda tidak perlu mencoba-coba konsep yang belum terbukti di pasar.",
+};
+
+/** Tiga poin pendukung — ditampilkan sebagai baris kartu. */
+const pendukung = [
   {
     icon: Users,
     title: "Cocok untuk Pemula",
@@ -22,6 +30,7 @@ const alasan = [
   },
 ];
 
+/** Satu kartu unggulan + tiga baris pendukung, dibedakan dari Solusi Kami. */
 const ValuesSection = () => {
   return (
     <section id="services" className="section section--white">
@@ -36,16 +45,33 @@ const ValuesSection = () => {
           </div>
         </div>
 
-        <div className="alasan-pendukung">
-          {alasan.map((item) => (
-            <div key={item.title} className="alasan-bar alasan-bar--tengah reveal">
-              <span className="alasan-bar__icon" aria-hidden="true">
-                <item.icon size={19} />
-              </span>
-              <h3>{item.title}</h3>
-              <p>{item.description}</p>
+        <div className="alasan">
+          {/* Kartu unggulan — panel indigo */}
+          <div className="alasan-utama reveal">
+            <span className="alasan-utama__ring" aria-hidden="true" />
+            <span className="alasan-utama__badge">
+              <utama.icon size={24} aria-hidden="true" />
+            </span>
+            <div className="relative">
+              <h3>{utama.title}</h3>
+              <p>{utama.description}</p>
             </div>
-          ))}
+          </div>
+
+          {/* Tiga baris pendukung */}
+          <div className="alasan-pendukung">
+            {pendukung.map((item) => (
+              <div key={item.title} className="alasan-bar reveal">
+                <span className="alasan-bar__icon">
+                  <item.icon size={19} aria-hidden="true" />
+                </span>
+                <div>
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
