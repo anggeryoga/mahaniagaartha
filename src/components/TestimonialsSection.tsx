@@ -1,59 +1,67 @@
-import { ChevronLeft, ChevronRight, Star } from "lucide-react";
-import { useState } from "react";
-import testimonialAvatar from "@/assets/testimonial-avatar.jpg";
+import { Star } from "lucide-react";
 
+/**
+ * Testimoni mitra. Teks apa adanya dari klien, tidak diubah.
+ * Tidak ada nama atau brand mitra, jadi kartu dibuat tanpa identitas.
+ */
 const testimonials = [
   {
+    stars: 5,
     quote:
-      "Awalnya saya ragu mulai usaha, tapi setelah ambil paket dari Maha Niaga Artha ternyata langsung bisa jualan. Alat dan bahan sudah lengkap, tinggal jalan saja.",
-    name: "Rizky Pratama",
-    role: "Mitra Mybestea",
-    avatar: testimonialAvatar,
+      "Awalnya cuma iseng coba ambil paket usahanya, ternyata alhamdulillah sesuai harapan. Adminnya ramah dan pengirimannya juga cepat serta rapi.",
   },
   {
+    stars: 5,
     quote:
-      "Saya mulai dari nol tanpa pengalaman. Dibimbing dari awal sampai bisa jualan tiap hari. Sekarang sudah punya pelanggan tetap.",
-    name: "Dewi Lestari",
-    role: "Mitra Seblak Express",
-    avatar: testimonialAvatar,
+      "Pelayanannya bagus, orangnya ramah dan amanah. Prosesnya juga tepat waktu.",
   },
   {
+    stars: 5,
     quote:
-      "Enaknya pakai sistem dari sini itu sudah siap semua. Brand sudah dikenal, jadi lebih mudah dapat pembeli dibanding mulai sendiri.",
-    name: "Andi Saputra",
-    role: "Mitra Kopi Ibukota",
-    avatar: testimonialAvatar,
+      "Adminnya ramah banget, pelayanannya gercep. Ownernya juga humoris, jadi makin asik komunikasinya 😆",
+  },
+  {
+    stars: 4,
+    quote:
+      "Sejauh ini cukup baik, semoga kualitas produk dan pelayanannya terus dipertahankan.",
+  },
+  {
+    stars: 4,
+    quote:
+      "Pelayanannya cukup baik, tapi komunikasi dari tim marketing dan CS masih perlu ditingkatkan supaya kerja sama lebih nyaman.",
+  },
+  {
+    stars: 5,
+    quote: "Prosesnya mudah dan nggak ribet, jadi cukup membantu.",
+  },
+  {
+    stars: 5,
+    quote:
+      "Puas banget sama pelayanannya, semoga ke depannya makin sukses!",
   },
 ];
 
+/** Rata-rata bintang dari seluruh ulasan. */
+const rata = (
+  testimonials.reduce((a, t) => a + t.stars, 0) / testimonials.length
+).toFixed(1);
+
 const TestimonialsSection = () => {
-  const [current, setCurrent] = useState(0);
-
-  const next = () => setCurrent((p) => (p + 1) % testimonials.length);
-  const prev = () =>
-    setCurrent((p) => (p - 1 + testimonials.length) % testimonials.length);
-
-  const t = testimonials[current];
-
   return (
     <section id="testimonials" className="section section--white">
       <div className="wrap">
-        <div className="sec-head sec-head--rule reveal">
-          <span className="sec-index">04</span>
-          <div className="sec-head__main">
+        <div className="sec-head sec-head--split reveal">
+          <div>
             <span className="eyebrow">Testimoni Mitra</span>
             <h2 className="sec-title">
               Cerita Nyata Mereka yang Sudah Mulai Usaha
             </h2>
           </div>
-        </div>
 
-        <div className="grid gap-[var(--gap)] lg:grid-cols-[.85fr_1.15fr] lg:gap-12 items-center">
-          {/* Kiri: ringkasan + navigasi */}
-          <div className="reveal">
-            <div className="flex items-center gap-3 mb-7">
+          <div className="sec-sub">
+            <span className="flex items-center gap-3">
               <span className="text-[length:var(--fs-num)] font-bold leading-none text-indigo">
-                4.9
+                {rata}
               </span>
               <span>
                 <span className="flex gap-0.5 mb-1">
@@ -62,64 +70,41 @@ const TestimonialsSection = () => {
                       key={i}
                       size={15}
                       className="text-amber fill-amber"
+                      aria-hidden="true"
                     />
                   ))}
                 </span>
                 <span className="block text-[length:var(--fs-xs)] uppercase tracking-wider text-[color:var(--text-2)]">
-                  Review Mitra
+                  Dari {testimonials.length} ulasan mitra
                 </span>
               </span>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <button
-                onClick={prev}
-                className="w-11 h-11 rounded-full border border-[var(--border-2)] grid place-items-center text-indigo transition-colors hover:border-purple hover:bg-purple-50"
-                aria-label="Testimoni sebelumnya"
-              >
-                <ChevronLeft size={18} />
-              </button>
-              <button
-                onClick={next}
-                className="w-11 h-11 rounded-full border border-[var(--border-2)] grid place-items-center text-indigo transition-colors hover:border-purple hover:bg-purple-50"
-                aria-label="Testimoni berikutnya"
-              >
-                <ChevronRight size={18} />
-              </button>
-              <span className="ml-2 text-[length:var(--fs-sm)] text-[color:var(--text-2)] tabular-nums">
-                {current + 1} / {testimonials.length}
-              </span>
-            </div>
+            </span>
           </div>
+        </div>
 
-          {/* Kanan: kutipan */}
-          <figure
-            key={current}
-            className="card reveal !p-8 lg:!p-10 border-l-4 !border-l-blue"
-          >
-            <blockquote className="text-[length:var(--fs-lead)] leading-[var(--lh-quiet)] text-[color:var(--text)] mb-7">
-              &ldquo;{t.quote}&rdquo;
-            </blockquote>
-
-            <figcaption className="flex items-center gap-3.5 pt-6 border-t border-[var(--border)]">
-              <img
-                src={t.avatar}
-                alt=""
-                className="w-11 h-11 object-cover photo--circle"
-                loading="lazy"
-                width={44}
-                height={44}
-              />
-              <span>
-                <span className="block font-semibold text-[color:var(--text)]">
-                  {t.name}
-                </span>
-                <span className="block text-[length:var(--fs-xs)] text-[color:var(--text-2)]">
-                  {t.role}
-                </span>
+        <div className="ulasan-grid">
+          {testimonials.map((t, i) => (
+            <figure key={i} className="ulasan reveal">
+              <span
+                className="flex gap-0.5 mb-3"
+                aria-label={`${t.stars} dari 5 bintang`}
+              >
+                {[...Array(5)].map((_, s) => (
+                  <Star
+                    key={s}
+                    size={14}
+                    className={
+                      s < t.stars
+                        ? "text-amber fill-amber"
+                        : "text-[color:var(--border-2)]"
+                    }
+                    aria-hidden="true"
+                  />
+                ))}
               </span>
-            </figcaption>
-          </figure>
+              <blockquote className="ulasan__text">{t.quote}</blockquote>
+            </figure>
+          ))}
         </div>
       </div>
     </section>
