@@ -1,6 +1,5 @@
 import { Helmet } from "react-helmet-async";
 import {
-  Users,
   ShoppingCart,
   Video,
   Mail,
@@ -14,34 +13,6 @@ import JobRow from "@/components/JobRow";
 const HR_EMAIL = "cvmahaniagaartha.hrd@gmail.com";
 
 const careers = [
-  {
-    icon: Users,
-    title: "Sales Online",
-    type: "Full-time",
-    location: "Jepara, Jawa Tengah",
-    description:
-      "Bertanggung jawab menangani lead dan calon pelanggan melalui WhatsApp serta berbagai channel digital, membangun komunikasi, melakukan follow-up, hingga mencapai target penjualan.",
-    qualifications: [
-      "Memiliki kemampuan komunikasi yang baik, terutama melalui chat.",
-      "Percaya diri dan nyaman berinteraksi dengan banyak orang.",
-      "Memiliki kemampuan negosiasi dan persuasi.",
-      "Berorientasi pada target dan hasil.",
-      "Responsif, disiplin, dan mampu melakukan follow-up secara konsisten.",
-      "Mampu bekerja secara individu maupun dalam tim.",
-      "Pengalaman di bidang Sales / Customer Service / Telemarketing menjadi nilai tambah.",
-    ],
-    responsibilities: [
-      "Menangani dan merespons lead/calon pelanggan melalui WhatsApp dan channel digital.",
-      "Membangun komunikasi dan menggali kebutuhan calon pelanggan.",
-      "Menjaga hubungan dengan calon pelanggan dan melakukan follow-up database.",
-      "Melakukan konsultasi, follow-up, dan handling objection hingga proses closing.",
-      "Menjelaskan produk, program, dan penawaran kepada calon pelanggan.",
-      "Mengelola dan memperbarui data serta aktivitas lead di CRM.",
-      "Mencapai target penjualan yang telah ditentukan.",
-    ],
-    extra: "Komunikatif | Proaktif | Pantang Menyerah | Target Oriented",
-    subject: "Nama_Sales Online",
-  },
   {
     icon: ShoppingCart,
     title: "Purchasing",
@@ -174,11 +145,11 @@ const Career = () => {
         <title>Lowongan Kerja Jepara Terbaru | Karir CV Maha Niaga Artha</title>
         <meta
           name="description"
-          content="CV Maha Niaga Artha membuka lowongan Sales Online, Purchasing, dan Content Creator. Penempatan Jepara, Jawa Tengah. Kirim lamaran melalui email HRD."
+          content="CV Maha Niaga Artha membuka lowongan Purchasing dan Content Creator. Penempatan Jepara, Jawa Tengah. Kirim lamaran melalui email HRD."
         />
         <meta
           name="keywords"
-          content="Lowongan kerja Jepara, Loker Jepara, Loker Jepara terbaru, CV Maha Niaga Artha, Sales Online Jepara, Purchasing Jepara, Content Creator Jepara"
+          content="Lowongan kerja Jepara, Loker Jepara, Loker Jepara terbaru, CV Maha Niaga Artha, Purchasing Jepara, Content Creator Jepara"
         />
         <meta
           property="og:title"
@@ -186,7 +157,7 @@ const Career = () => {
         />
         <meta
           property="og:description"
-          content="CV Maha Niaga Artha membuka kesempatan karir untuk Sales Online, Purchasing, dan Content Creator di Jepara."
+          content="CV Maha Niaga Artha membuka kesempatan karir untuk Purchasing dan Content Creator di Jepara."
         />
         <meta property="og:type" content="website" />
         <link rel="canonical" href="https://mahaniagaartha.com/career" />
