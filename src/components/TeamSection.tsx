@@ -21,6 +21,12 @@ const teamMembers = [
     image: "/dm/dm%204.webp",
     phone: "6281234086100",
   },
+  {
+    name: "Desi",
+    role: "Sales Marketing",
+    image: "/dm/dm%205.webp",
+    phone: "",
+  },
 ];
 
 const TeamSection = () => {
@@ -42,7 +48,9 @@ const TeamSection = () => {
             const message = encodeURIComponent(
               `Halo ${member.name}, saya tertarik untuk memulai usaha dari Website Perusahaan. Bisa dibantu?`
             );
-            const waLink = `https://wa.me/${member.phone}?text=${message}`;
+            const waLink = member.phone
+              ? `https://wa.me/${member.phone}?text=${message}`
+              : "#contact";
 
             return (
               <a
